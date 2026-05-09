@@ -1,13 +1,14 @@
 "use client";
 
-import { ShaderAnimation } from "@/components/ui/shader-lines";
+import { GravitationalMesh } from "@/components/ui/gravitational-mesh";
 import { GlassButton, GlassFilter } from "@/components/ui/liquid-glass";
 import { motion } from "framer-motion";
 
 export function HeroSection() {
   return (
     <section className="relative flex h-screen w-full flex-col items-center justify-center overflow-hidden bg-flow-black">
-      <ShaderAnimation />
+      {/* Interactive gravitational mesh — replaces the previous shader background */}
+      <GravitationalMesh />
       <GlassFilter />
 
       <div className="pointer-events-none relative z-10 flex flex-col items-center gap-8 px-6 text-center">
