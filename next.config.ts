@@ -11,6 +11,10 @@ const nextConfig: NextConfig = {
         source: "/proposal/:path*",
         destination: "https://propflow-production-170a.up.railway.app/proposal/:path*",
       },
+      {
+        source: "/api/:path*",
+        destination: "https://propflow-production-170a.up.railway.app/api/:path*",
+      },
     ];
   },
 };
