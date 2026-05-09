@@ -11,9 +11,13 @@ import Lenis from "@studio-freight/lenis";
 export function SmoothScroll() {
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.15,
-      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      // lerp-based config feels snappier than duration-based.
+      // Higher lerp = more responsive (less inertia). 0.12-0.15 is a good
+      // "premium but snappy" range.
+      lerp: 0.14,
       smoothWheel: true,
+      wheelMultiplier: 1.1,
+      touchMultiplier: 1.5,
     });
 
     let rafId = 0;

@@ -122,7 +122,8 @@
   }
   html {
     @apply font-sans;
-    scroll-behavior: smooth;
+    /* Lenis handles smooth scrolling globally — native smooth-behavior
+       fights with it and makes scrolling feel sluggish. */
   }
 }
 
