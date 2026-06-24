@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>flow+ — The Brain Behind It</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="css/flow-plus.css?v=5">
+  <style>
+    /* scroll progress */
+    .scroll-progress { position: fixed; top: 0; left: 0; height: 3px; width: 0%; z-index: 200; }
+    .scroll-progress .mesh { position: absolute; inset: -200% -10%; filter: blur(8px) saturate(160%); }
+
+    .back-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--text-3); text-decoration: none; font-size: 0.85rem; font-weight: 500; transition: color 0.3s; }
+    .back-link:hover { color: var(--text-1); }
+    .back-link .arrow { transition: transform 0.3s; }
+    .back-link:hover .arrow { transform: translateX(-4px); }
+    body.rtl .back-link:hover .arrow { transform: translateX(4px); }
+
+    /* founder hero */
+    .f-hero { min-height: 70vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: left; position: relative; overflow: hidden; padding: 8rem 0 4rem; }
+    .f-intro { font-size: clamp(1.15rem, 2.2vw, 1.6rem); line-height: 1.55; color: var(--text-1); font-weight: 400; max-width: 60ch; }
+    body.rtl .f-intro { line-height: 1.85; }
+
+    .intro-statement { font-size: clamp(1.6rem, 4vw, 3rem); font-weight: 500; line-height: 1.25; letter-spacing: -0.02em; max-width: 22ch; }
+    body.rtl .intro-statement { letter-spacing: 0; line-height: 1.5; }
+    .intro-statement em { font-style: normal; color: var(--text-3); }
+
+    .principle-card { position: relative; border-radius: var(--radius-lg); overflow: hidden; isolation: isolate; min-height: 240px; display: flex; flex-direction: column; justify-content: flex-end; padding: clamp(1.4rem,2.5vw,2rem); background: #08080a; }
+    .principle-card::before { content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1px; z-index: 4; background: linear-gradient(140deg, rgba(255,255,255,0.2), rgba(255,255,255,0.03) 55%, rgba(255,255,255,0.1)); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; }
+    .principle-card .num { position: relative; z-index: 3; font-size: 0.75rem; letter-spacing: 0.2em; color: rgba(255,255,255,0.7); font-weight: 600; margin-bottom: auto; }
+    .principle-card h3 { position: relative; z-index: 3; }
+    .principle-card p { position: relative; z-index: 3; color: rgba(255,255,255,0.82); margin-top: 0.5rem; font-size: 0.95rem; }
+
+    .quote-block { text-align: center; max-width: 900px; margin: 0 auto; }
+    .quote-block .q { font-size: clamp(1.8rem, 4.5vw, 3.4rem); font-weight: 600; letter-spacing: -0.025em; line-height: 1.15; }
+    body.rtl .quote-block .q { letter-spacing: 0; line-height: 1.5; }
+
+    .menu-btn { display: none; }
+  </style>
+</head>
+<body>
+  <div class="bg-vignette"></div>
+  <div class="scroll-progress"><span class="mesh mesh-1"></span></div>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo"><span class="brand"><span class="b-flow">flow</span><span class="b-plus">+</span></span></a>
+      <div class="nav-links">
+        <a href="index.html" class="back-link"><span class="arrow">←</span><span class="lang-en">Back to home</span><span class="lang-ar">العودة للرئيسية</span></a>
+        <a href="index.html#contact"><span class="lang-en">Contact</span><span class="lang-ar">تواصل</span></a>
+        <span class="lang-toggle-wrap">
+          <span class="lang-toggle">
+            <button class="lang-btn active" data-lang="en">EN</button>
+            <button class="lang-btn" data-lang="ar">ع</button>
+          </span>
+        </span>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <!-- HERO -->
+    <section class="f-hero">
+      <div class="hero-fluid">
+        <span class="fluid-blob mesh-5" style="top:-10%;left:-10%;animation:morphA 28s ease-in-out infinite"></span>
+        <span class="fluid-blob mesh-1" style="bottom:-12%;right:-8%;animation:morphB 32s ease-in-out infinite"></span>
+        <span class="fluid-blob mesh-4" style="top:24%;right:26%;width:30vw;height:30vw;animation:morphA 22s ease-in-out infinite reverse"></span>
+      </div>
+      <div class="hero-content container" style="position:relative;z-index:5;max-width:760px;text-align:left">
+        <div class="section-label" data-anim><span class="lang-en">The Founder</span><span class="lang-ar">المؤسس</span></div>
+        <p class="f-intro" data-anim data-delay="1">
+          <span class="lang-en">A creative technologist based in Abu Dhabi, building products, automation systems and AI-driven studios under the <span class="brand"><span class="b-flow">flow</span><span class="b-plus">+</span></span> umbrella. Mohammad Abu Zant works small, ships fast, and treats every output as a long-running system.</span>
+          <span class="lang-ar">مهندس تقني إبداعي مقرّه أبوظبي، يبني منتجات وأنظمة أتمتة واستوديوهات مدفوعة بالذكاء الاصطناعي تحت مظلّة <span class="brand"><span class="b-flow">flow</span><span class="b-plus">+</span></span>. محمد ابوزنط يعمل بصمت، ويُطلق بسرعة، ويتعامل مع كل عمل كنظام طويل الأمد.</span>
+        </p>
+      </div>
+      <div class="scroll-hint"><span class="lang-en">Scroll</span><span class="lang-ar">مرّر</span><div class="scroll-line"></div></div>
+    </section>
+
+    <!-- INTRO STATEMENT -->
+    <section class="section section-alt">
+      <div class="container">
+        <div class="section-label" data-anim><span class="lang-en">In his words</span><span class="lang-ar">بكلماته</span></div>
+        <p class="intro-statement" data-anim data-delay="1">
+          <span class="lang-en">I build with the tools of tomorrow, at the speed of a startup, with the craft of a premium studio. <em>Young, fast, and three years ahead.</em></span>
+          <span class="lang-ar">أبني بأدوات الغد، بسرعة الشركات الناشئة، وبحرفية الاستوديوهات المتميزة. <em>شباب، سرعة، وثلاث سنوات إلى الأمام.</em></span>
+        </p>
+      </div>
+    </section>
+
+    <!-- PRINCIPLES -->
+    <section class="section">
+      <div class="container">
+        <div class="section-label" data-anim><span class="lang-en">What drives the work</span><span class="lang-ar">ما يقود العمل</span></div>
+        <h2 data-anim data-delay="1" style="margin-bottom:3rem"><span class="lang-en">Four principles.</span><span class="lang-ar">أربعة مبادئ.</span></h2>
+        <div class="grid grid-2">
+          <div class="principle-card" data-zoom><span class="mesh mesh-1"></span><span class="grain"></span><div class="bigcard-scrim"></div>
+            <div class="num">01</div>
+            <h3><span class="lang-en">Speed</span><span class="lang-ar">السرعة</span></h3>
+            <p><span class="lang-en">Ship at startup pace. Momentum is the advantage — ideas become products in days, not quarters.</span><span class="lang-ar">الإطلاق بسرعة الشركات الناشئة. الزخم هو الميزة — الأفكار تصبح منتجات في أيام، لا أرباع سنة.</span></p>
+          </div>
+          <div class="principle-card" data-zoom><span class="mesh mesh-3"></span><span class="grain"></span><div class="bigcard-scrim"></div>
+            <div class="num">02</div>
+            <h3><span class="lang-en">Craft</span><span class="lang-ar">الحرفية</span></h3>
+            <p><span class="lang-en">Premium-studio detail on every surface. Minimal, intentional, and finished.</span><span class="lang-ar">تفاصيل بمستوى الاستوديوهات المتميزة في كل سطح. بسيط، مقصود، ومكتمل.</span></p>
+          </div>
+          <div class="principle-card" data-zoom><span class="mesh mesh-4"></span><span class="grain"></span><div class="bigcard-scrim"></div>
+            <div class="num">03</div>
+            <h3><span class="lang-en">Automation</span><span class="lang-ar">الأتمتة</span></h3>
+            <p><span class="lang-en">Build systems that run themselves. The best work keeps working after I step away.</span><span class="lang-ar">بناء أنظمة تعمل بنفسها. أفضل عمل يستمر في العمل بعد أن أبتعد.</span></p>
+          </div>
+          <div class="principle-card" data-zoom><span class="mesh mesh-5"></span><span class="grain"></span><div class="bigcard-scrim"></div>
+            <div class="num">04</div>
+            <h3><span class="lang-en">Ahead</span><span class="lang-ar">المُضيّ قُدُماً</span></h3>
+            <p><span class="lang-en">Live three years in the future. Adopt the tools others haven't reached yet.</span><span class="lang-ar">العيش ثلاث سنوات في المستقبل. تبنّي الأدوات التي لم يصل إليها الآخرون بعد.</span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOOLS -->
+    <section class="section section-alt">
+      <div class="container">
+        <div class="section-label" data-anim><span class="lang-en">Built with the tools of tomorrow</span><span class="lang-ar">مبني بأدوات الغد</span></div>
+        <h2 data-anim data-delay="1" style="max-width:16ch"><span class="lang-en">Real tools. Real impact.</span><span class="lang-ar">أدوات حقيقية. أثر حقيقي.</span></h2>
+        <div class="tools-row" data-anim data-delay="2">
+          <div class="tool-chip"><span class="tool-logo"><svg viewBox="0 0 24 24" fill="none" stroke="#D97757" stroke-width="1.7" stroke-linecap="round"><line x1="14.6" y1="12" x2="22.5" y2="12"/><line x1="14.25" y1="13.3" x2="19.1" y2="16.1"/><line x1="13.3" y1="14.25" x2="17.25" y2="21.09"/><line x1="12" y1="14.6" x2="12" y2="20.2"/><line x1="10.7" y1="14.25" x2="6.75" y2="21.09"/><line x1="9.75" y1="13.3" x2="4.9" y2="16.1"/><line x1="9.4" y1="12" x2="1.5" y2="12"/><line x1="9.75" y1="10.7" x2="4.9" y2="7.9"/><line x1="10.7" y1="9.75" x2="6.75" y2="2.91"/><line x1="12" y1="9.4" x2="12" y2="3.8"/><line x1="13.3" y1="9.75" x2="17.25" y2="2.91"/><line x1="14.25" y1="10.7" x2="19.1" y2="7.9"/></svg></span>Claude Code</div>
+          <div class="tool-chip"><span class="tool-logo"><svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.3" stroke-linejoin="round"><ellipse cx="12" cy="12" rx="2.9" ry="8.2"/><ellipse cx="12" cy="12" rx="2.9" ry="8.2" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="2.9" ry="8.2" transform="rotate(120 12 12)"/></svg></span>ChatGPT Codex</div>
+          <div class="tool-chip"><span class="tool-logo"><svg viewBox="0 0 24 24"><defs><linearGradient id="gemg" x1="2" y1="3" x2="22" y2="21" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#4796E3"/><stop offset="0.5" stop-color="#7C72D6"/><stop offset="1" stop-color="#BC6FB0"/></linearGradient></defs><path d="M12 1.5c.45 5.7 4.3 9.55 10 10-5.7.45-9.55 4.3-10 10-.45-5.7-4.3-9.55-10-10 5.7-.45 9.55-4.3 10-10z" fill="url(#gemg)"/></svg></span>Gemini</div>
+          <div class="tool-chip"><span class="tool-logo"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="4.2" fill="#8AB4F8"/><ellipse cx="12" cy="12" rx="10" ry="4" stroke="#8AB4F8" stroke-width="1.4" transform="rotate(-25 12 12)"/></svg></span>Antigravity</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUOTE -->
+    <section class="section">
+      <div class="container">
+        <div class="quote-block" data-zoom>
+          <p class="q"><span class="lang-en">“Not hours. <span class="text-gradient" style="color:var(--text-3)">Outcomes.</span>”</span><span class="lang-ar">”لا نبيع ساعات. <span style="color:var(--text-3)">نبني نتائج.</span>“</span></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section section-alt">
+      <div class="container" style="text-align:center">
+        <h2 data-anim style="margin-bottom:1.4rem"><span class="lang-en">Let's build something.</span><span class="lang-ar">لنبنِ شيئاً معاً.</span></h2>
+        <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap" data-anim data-delay="1">
+          <a href="index.html#contact" class="btn-mesh"><span class="mesh mesh-1"></span><span class="lang-en"><span style="color:#000000">Get in touch</span></span><span class="lang-ar">تواصل معنا</span></a>
+          <a href="index.html" class="btn-ghost"><span class="lang-en">Back to home</span><span class="lang-ar">العودة للرئيسية</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-logo"><span class="brand"><span class="b-flow">flow</span><span class="b-plus">+</span></span></div>
+      <p><span class="lang-en">Flow Plus for Computers and Information Systems · Abu Dhabi, UAE</span><span class="lang-ar">فلو بلس لأنظمة الحاسوب والمعلومات · أبوظبي، الإمارات</span></p>
+    </div>
+  </footer>
+
+  <script src="image-slot.js"></script>
+  <script src="js/flow-plus.js"></script>
+  <script>
+    // scroll progress bar
+    const bar = document.querySelector('.scroll-progress');
+    function updateProgress() {
+      const h = document.documentElement.scrollHeight - window.innerHeight;
+      const p = h > 0 ? (window.scrollY / h) * 100 : 0;
+      bar.style.width = p + '%';
+    }
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    window.addEventListener('resize', updateProgress);
+    updateProgress();
+  </script>
+</body>
+</html>
