@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# flow+ — Creative Technology Company
 
-## Getting Started
+The flow+ brand website. Static HTML/CSS/JS, bilingual EN/AR, dark frosted-mesh design system.
 
-First, run the development server:
+## Pages
+
+- `index.html` — main landing page (hero, services card-stack, work, Flow Grid, founder teaser, contact)
+- `founder.html` — standalone founder page with scroll progress
+- `brand-guidelines.html` — full brand system documentation
+
+## Run locally
+
+Any static server. For example:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+python3 -m http.server 8000
+# then open http://localhost:8000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Structure
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+index.html
+founder.html
+brand-guidelines.html
+image-slot.js         # custom element for drop-in photo placeholders
+css/flow-plus.css     # design system (frosted mesh gradients, glass, brand lock)
+js/flow-plus.js       # language toggle, scroll reveal, card stack, parallax
+assets/logo.png       # brand wordmark
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Design system
 
-## Learn More
+- **5 frosted-mesh palettes** (`mesh-1` … `mesh-5`) — radial + conic gradients only, never linear, with a noise overlay
+- **Brand weight lock** — `flow` is always `font-weight: 300`, `+` is `700`, wrapped in `.brand` with bidi isolation so it never flips in RTL
+- **Cairo** for Arabic, **Space Grotesk** for English
+- **WhatsApp:** `+971 55 846 1197` · **Instagram:** `@itsflowplus` · **Email:** `hello@flowplus.ae`
 
-To learn more about Next.js, take a look at the following resources:
+See `brand-guidelines.html` for the full system.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deploy
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The repo is static. Drop it on Vercel, Netlify, GitHub Pages, or any object store. The Railway config (`railway.toml`) serves the directory via a tiny static server.

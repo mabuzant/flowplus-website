@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>flow+ — Creative Technology Company</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/flow-plus.css?v=5">
+  <style>
+    .section-alt { background: var(--bg-deep); }
+    .hero-float-photo { position: absolute; border-radius: var(--radius-md); overflow: hidden; z-index: 1; border: 1px solid rgba(255,255,255,0.08); }
+    .pillar-num { font-size: clamp(3.5rem, 7vw, 6rem); font-weight: 700; line-height: 1; letter-spacing: -0.04em; -webkit-text-fill-color: transparent; -webkit-background-clip: text; background-clip: text; }
+    .menu-btn { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; z-index: 101; flex-direction: column; gap: 5px; }
+    .menu-btn span { width: 22px; height: 2px; background: #fff; display: block; }
+    .mobile-menu { position: fixed; inset: 0; z-index: 99; background: rgba(0,0,0,0.96); backdrop-filter: blur(30px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2rem; opacity: 0; pointer-events: none; transition: opacity 0.4s; }
+    .mobile-menu.open { opacity: 1; pointer-events: all; }
+    .mobile-menu a { color: #fff; text-decoration: none; font-size: 1.4rem; font-weight: 500; }
+    @media (max-width: 640px) { .menu-btn { display: flex; } .hero-float-photo { display: none; } }
+  </style>
+</head>
+<body>
+  <div class="bg-vignette"></div>
+
+  <!-- ===== NAV ===== -->
+  <nav class="nav" style="font-weight: 500">
+    <div class="nav-inner">
+      <a href="#hero" class="nav-logo"><span class="brand"><span class="b-flow">flow</span><span class="b-plus">+</span></span></a>
+      <div class="nav-links">
+        <a href="#about"><span class="lang-en">About</span><span class="lang-ar">عن <span class="brand"><span class="b-flow">flow</span><span class="b-plus">+</span></span></span></a>
+        <a href="#services"><span class="lang-en">Services</span><span class="lang-ar">الخدمات</span></a>
+        <a href="#work"><span class="lang-en">Work</span><span class="lang-ar">الأعمال</span></a>
+        <a href="#flowgrid"><span class="lang-en">Flow Grid</span><span class="lang-ar">فلو غريد</span></a>
+        <a href="#contact"><span class="lang-en">Contact</span><span class="lang-ar">تواصل</span></a>
+        <span class="lang-toggle-wrap">
+          <span class="lang-toggle">
+            <button class="lang-btn active" data-lang="en">EN</button>
+            <button class="lang-btn" data-lang="ar">ع</button>
+          </span>
+        </span>
+      </div>
+      <button class="menu-btn" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <div class="mobile-menu">
+    <a href="#about"><span class="lang-en">About</span><span class="lang-ar">عن <span class="brand"><span class="b-flow">flow</span><span class="b-plus">+</span></span></span></a>
+    <a href="#services"><span class="lang-en">Services</span><span class="lang-ar">الخدمات</span></a>
+    <a href="#work"><span class="lang-en">Work</span><span class="lang-ar">الأعمال</span></a>
+    <a href="#flowgrid"><span class="lang-en">Flow Grid</span><span class="lang-ar">فلو غريد</span></a>
+    <a href="#contact"><span class="lang-en">Contact</span><span class="lang-ar">تواصل</span></a>
+    <span class="lang-toggle">
+      <button class="lang-btn active" data-lang="en">EN</button>
+      <button class="lang-btn" data-lang="ar">ع</button>
+    </span>
+  </div>
+
+  <main>
+    <!-- ===== HERO ===== -->
+    <section id="hero" class="hero">
+      <div class="hero-fluid">
+        <span class="fluid-blob mesh-1" style="top:-12%;left:-10%;animation:morphA 26s ease-in-out infinite"></span>
+        <span class="fluid-blob mesh-4" style="bottom:-14%;right:-8%;animation:morphB 32s ease-in-out infinite"></span>
+        <span class="fluid-blob mesh-2" style="top:18%;right:22%;width:32vw;height:32vw;animation:morphA 22s ease-in-out infinite reverse"></span>
+      </div>
+      <div class="orb" style="width:620px;height:620px;top:-12%;left:-8%;background:radial-gradient(circle,rgba(88,166,255,0.28),transparent 68%);opacity:0.5;animation:orbDrift1 24s ease-in-out infinite" data-speed="0.04"></div>
+      <div class="orb" style="width:520px;height:520px;bottom:-10%;right:-6%;background:radial-gradient(circle,rgba(255,107,107,0.22),transparent 68%);opacity:0.45;animation:orbDrift2 28s ease-in-out infinite" data-speed="0.06"></div>
+      <div class="orb" style="width:380px;height:380px;top:24%;right:18%;background:radial-gradient(circle,rgba(16,83,104,0.4),transparent 70%);opacity:0.4;animation:orbDrift1 20s ease-in-out infinite" data-speed="0.03"></div>
+
+      <div class="hero-content" style="position:relative;z-index:5;display:flex;flex-direction:column;align-items:center">
+        <div class="hero-logo" data-anim><span class="brand"><span class="b-flow">flow</span><span class="b-plus">+</span></span></div>
+
+        <!-- Rotating informative quotes -->
+        <div class="quote-rotator" data-anim data-delay="1">
+          <div class="quote-slide">
+            <span class="lang-en">We build digital systems that run themselves.</span>
+            <span class="lang-ar">نبني أنظمة رقمية تعمل بنفسها.</span>
+          </div>
+          <div class="quote-slide">
+            <span class="lang-en">Automation, AI &amp; content — engineered as products.</span>
+            <span class="lang-ar">أتمتة وذكاء اصطناعي ومحتوى — مهندسة كمنتجات.</span>
+          </div>
+          <div class="quote-slide">
+            <span class="lang-en">Young. Fast. Three years ahead.</span>
+            <span class="lang-ar">شباب. سرعة. ثلاث سنوات إلى الأمام.</span>
+          </div>
+          <div class="quote-slide">
+            <span class="lang-en">Not hours. Outcomes.</span>
+            <span class="lang-ar">لا نبيع ساعات. نبني نتائج.</span>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:1rem;margin-top:2.4rem;flex-wrap:wrap;justify-content:center" data-anim data-delay="2">
+          <a href="#work" class="btn-mesh">
+            <span class="mesh mesh-1"></span>
+            <span class="lang-en"><span style="color: #000000">See Our Work</span></span><span class="lang-ar">شاهد أعمالنا</span>
+          </a>
+          <a href="#contact" class="btn-ghost">
+            <span class="lang-en">Start a Project</span><span class="lang-ar">ابدأ مشروعاً</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="scroll-hint">
+        <span class="lang-en">Scroll</span><span class="lang-ar">مرّر</span>
+        <div class="scroll-line"></div>
+      </div>
+    </section>
+
+    <!-- ===== ABOUT ===== -->
+    <section id="about" class="section section-alt">
+      <div class="container">
+        <div class="section-label" data-anim><span class="lang-en">Who We Are</span><span class="lang-ar">من نحن</span></div>
+        <h2 data-anim data-delay="1" style="max-width:16ch">
+          <span class="lang-en">We build what <em style="font-style:normal;color:var(--text-3)">runs.</em></span>
+          <span class="lang-ar">نبني ما <em style="font-style:normal;color:var(--text-3)">يعمل.</em></span>
+        </h2>
+        <p class="text-lg" data-anim data-delay="2" style="max-width:680px;margin-top:2rem">
+          <span class="lang-en"><span class="brand"><span class="b-flow">flow</span><span class="b-plus">+</span></span> is a creative technology company at the intersection of automation engineering, AI product development, and digital content. Based in Abu Dhabi, we ship systems that live, run, and scale long after the work is done.</span>
+          <span class="lang-ar"><span class="brand"><span class="b-flow">flow</span><span class="b-plus">+</span></span> شركة تقنية إبداعية عند تقاطع هندسة الأتمتة وتطوير منتجات الذكاء الاصطناعي والمحتوى الرقمي. من أبوظبي، نُطلق أنظمة تعمل وتتوسّع بعد انتهاء المشروع بوقت طويل.</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- ===== TOOLS OF TOMORROW ===== -->
+    <section class="section">
+      <div class="container">
+        <div class="section-label" data-anim><span class="lang-en">Built with the tools of tomorrow</span><span class="lang-ar">مبني بأدوات الغد</span></div>
+        <h2 data-anim data-delay="1" style="max-width:16ch"><span class="lang-en">Real tools. Real impact.</span><span class="lang-ar">أدوات حقيقية. أثر حقيقي.</span></h2>
+        <div class="tools-row" data-anim data-delay="2">
+          <div class="tool-chip"><span class="tool-logo"><svg viewBox="0 0 24 24" fill="none" stroke="#D97757" stroke-width="1.7" stroke-linecap="round"><line x1="14.6" y1="12" x2="22.5" y2="12"/><line x1="14.25" y1="13.3" x2="19.1" y2="16.1"/><line x1="13.3" y1="14.25" x2="17.25" y2="21.09"/><line x1="12" y1="14.6" x2="12" y2="20.2"/><line x1="10.7" y1="14.25" x2="6.75" y2="21.09"/><line x1="9.75" y1="13.3" x2="4.9" y2="16.1"/><line x1="9.4" y1="12" x2="1.5" y2="12"/><line x1="9.75" y1="10.7" x2="4.9" y2="7.9"/><line x1="10.7" y1="9.75" x2="6.75" y2="2.91"/><line x1="12" y1="9.4" x2="12" y2="3.8"/><line x1="13.3" y1="9.75" x2="17.25" y2="2.91"/><line x1="14.25" y1="10.7" x2="19.1" y2="7.9"/></svg></span>Claude Code</div>
+          <div class="tool-chip"><span class="tool-logo"><svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.3" stroke-linejoin="round"><ellipse cx="12" cy="12" rx="2.9" ry="8.2"/><ellipse cx="12" cy="12" rx="2.9" ry="8.2" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="2.9" ry="8.2" transform="rotate(120 12 12)"/></svg></span>ChatGPT Codex</div>
+          <div class="tool-chip"><span class="tool-logo"><svg viewBox="0 0 24 24"><defs><linearGradient id="gemg" x1="2" y1="3" x2="22" y2="21" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#4796E3"/><stop offset="0.5" stop-color="#7C72D6"/><stop offset="1" stop-color="#BC6FB0"/></linearGradient></defs><path d="M12 1.5c.45 5.7 4.3 9.55 10 10-5.7.45-9.55 4.3-10 10-.45-5.7-4.3-9.55-10-10 5.7-.45 9.55-4.3 10-10z" fill="url(#gemg)"/></svg></span>Gemini</div>
+          <div class="tool-chip"><span class="tool-logo"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="4.2" fill="#8AB4F8"/><ellipse cx="12" cy="12" rx="10" ry="4" stroke="#8AB4F8" stroke-width="1.4" transform="rotate(-25 12 12)"/></svg></span>Antigravity</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SERVICES ===== -->
+    <section id="services" class="section">
+      <div class="container">
+        <div class="section-label" data-anim><span class="lang-en">What We Do</span><span class="lang-ar">ما نفعله</span></div>
+        <h2 data-anim data-delay="1" style="margin-bottom:3.5rem"><span class="lang-en">Services</span><span class="lang-ar">الخدمات</span></h2>
+
+        <div class="stack-wrap">
+    <div class="card-stack" id="serviceStack">
+      <div class="stack-card">
+        <span class="mesh mesh-1"></span>
+        <span class="grain"></span>
+        <div class="bigcard-scrim"></div>
+        <div class="bigcard-body">
+          <div class="bigcard-kicker">01</div>
+          <div class="bigcard-title"><span class="lang-en">AI &amp; Automation</span><span class="lang-ar">الذكاء الاصطناعي والأتمتة</span></div>
+          <p class="bigcard-desc"><span class="lang-en">Custom AI agents, workflow automation, process audits and LLM integrations — built to spec, built to run.</span><span class="lang-ar">وكلاء ذكاء اصطناعي مخصّصون، أتمتة سير العمل، تدقيق العمليات ودمج نماذج اللغة — مبنية حسب الطلب لتعمل.</span></p>
+        </div>
+      </div>
+      <div class="stack-card">
+        <span class="mesh mesh-3"></span>
+        <span class="grain"></span>
+        <div class="bigcard-scrim"></div>
+        <div class="bigcard-body">
+          <div class="bigcard-kicker">02</div>
+          <div class="bigcard-title"><span class="lang-en">Content &amp; AI Media</span><span class="lang-ar">المحتوى والوسائط الذكية</span></div>
+          <p class="bigcard-desc"><span class="lang-en">AI content strategy, generated visuals, UGC automation, bilingual social and video at scale.</span><span class="lang-ar">استراتيجية محتوى بالذكاء الاصطناعي، مرئيات مولّدة، أتمتة المحتوى، ومحتوى ثنائي اللغة وفيديو على نطاق واسع.</span></p>
+        </div>
+      </div>
+      <div class="stack-card">
+        <span class="mesh mesh-5"></span>
+        <span class="grain"></span>
+        <div class="bigcard-scrim"></div>
+        <div class="bigcard-body">
+          <div class="bigcard-kicker">03</div>
+          <div class="bigcard-title"><span class="lang-en">SaaS Products</span><span class="lang-ar">منتجات SaaS</span></div>
+          <p class="bigcard-desc"><span class="lang-en">Full product scoping, design, development and launch. We build software — not hours. Outcome-based.</span><span class="lang-ar">تحديد وتصميم وتطوير وإطلاق المنتجات بالكامل. نبني برمجيات — لا ساعات. قائمة على النتائج.</span></p>
+        </div>
+      </div>
+    </div>
+    <div class="stack-controls">
+      <button class="stack-btn" id="stackPrev" aria-label="Previous">‹</button>
+      <span class="stack-counter"><span id="stackNum">1</span> / 3</span>
+      <button class="stack-btn" id="stackNext" aria-label="Next">›</button>
+    </div>
+    <div class="stack-hint"><span class="lang-en">Tap a card to shuffle</span><span class="lang-ar">انقر البطاقة للتبديل</span></div>
+  </div>
+      </div>
+    </section>
+
+    <!-- ===== WORK / PORTFOLIO ===== -->
+    <section id="work" class="section section-alt">
+      <div class="container">
+        <h2 class="work-hero-title" data-anim><span class="lang-en">What we've built.</span><span class="lang-ar">ما بنيناه.</span></h2>
+      </div>
+    </section>
+
+    <!-- PROJECT 1: Kyo -->
+    <section class="section work-showcase">
+      <div class="container">
+        <div class="showcase-header" data-anim>
+          <div class="showcase-kicker"><span class="lang-en">E-commerce · WhatsApp Store</span><span class="lang-ar">تجارة إلكترونية · متجر واتساب</span></div>
+          <h3 class="showcase-title"><span class="lang-en">Kyo</span><span class="lang-ar">كيو</span></h3>
+        </div>
+        <a href="https://kyo.ae" target="_blank" rel="noopener" class="bigcard work-card work-card-logo showcase-card" data-zoom style="text-decoration:none;color:inherit;background:#1a1be0">
+          <span class="mesh mesh-kyo" data-speed="0.02"></span>
+          <span class="grain"></span>
+          <div class="work-logo-hero"><img src="assets/kyo-logo.svg" alt="Kyo"></div>
+          <div class="bigcard-scrim"></div>
+          <div class="bigcard-body">
+            <p class="bigcard-desc"><span class="lang-en">A ready-made WhatsApp &amp; Instagram store for home businesses across the Gulf. Launch a storefront in under two minutes — flat monthly fee, zero commission.</span><span class="lang-ar">متجر جاهز على واتساب وإنستغرام لأصحاب المشاريع المنزلية في الخليج. أطلق متجرك خلال دقيقتين — اشتراك شهري ثابت بدون عمولة.</span></p>
+            <span class="bigcard-link"><span class="lang-en">kyo.ae</span><span class="lang-ar">kyo.ae</span><span class="arrow">↗</span></span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- PROJECT 2: AEO Tool -->
+    <section class="section work-showcase">
+      <div class="container">
+        <div class="showcase-header" data-anim>
+          <div class="showcase-kicker"><span class="lang-en">SaaS</span><span class="lang-ar">منتج SaaS</span></div>
+          <h3 class="showcase-title"><span class="lang-en">AEO Tool</span><span class="lang-ar">أداة AEO</span></h3>
+        </div>
+        <div class="bigcard work-card showcase-card" data-zoom>
+          <span class="mesh mesh-2" data-speed="0.02"></span>
+          <span class="grain"></span>
+          <div class="bigcard-scrim"></div>
+          <div class="bigcard-body">
+            <p class="bigcard-desc"><span class="lang-en">Answer Engine Optimization — making content discoverable by AI search engines.</span><span class="lang-ar">تحسين محركات الإجابة — لجعل المحتوى قابلاً للاكتشاف بواسطة محركات البحث الذكية.</span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECT 3: Khutta -->
+    <section class="section work-showcase">
+      <div class="container">
+        <div class="showcase-header" data-anim>
+          <div class="showcase-kicker"><span class="lang-en">Platform</span><span class="lang-ar">منصة</span></div>
+          <h3 class="showcase-title"><span class="lang-en">Khutta</span><span class="lang-ar">خطة</span></h3>
+        </div>
+        <div class="bigcard work-card showcase-card" data-zoom>
+          <span class="mesh mesh-3" data-speed="0.02"></span>
+          <span class="grain"></span>
+          <div class="bigcard-scrim"></div>
+          <div class="bigcard-body">
+            <p class="bigcard-desc"><span class="lang-en">A digital platform crafted for seamless regional commerce and communication.</span><span class="lang-ar">منصة رقمية مصممة لتجارة وتواصل إقليمي سلس.</span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECT 4: AI Additive Manufacturing -->
+    <section class="section work-showcase">
+      <div class="container">
+        <div class="showcase-header" data-anim>
+          <div class="showcase-kicker"><span class="lang-en">R&D · AI Manufacturing</span><span class="lang-ar">بحث وتطوير · تصنيع</span></div>
+          <h3 class="showcase-title"><span class="lang-en">AI Additive Manufacturing</span><span class="lang-ar">تصنيع إضافي بالذكاء الاصطناعي</span></h3>
+        </div>
+        <div class="bigcard work-card showcase-card" data-zoom>
+          <span class="mesh mesh-5" data-speed="0.02"></span>
+          <span class="grain"></span>
+          <div class="coming-badge"><span class="lang-en">Coming Soon</span><span class="lang-ar">قريباً</span></div>
+          <div class="bigcard-scrim"></div>
+          <div class="bigcard-body">
+            <p class="bigcard-desc"><span class="lang-en">An AI-driven 3D printing solution — generative design to production, automated.</span><span class="lang-ar">حل طباعة ثلاثية الأبعاد مدعوم بالذكاء الاصطناعي — من التصميم التوليدي إلى الإنتاج، بشكل مؤتمت.</span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECT 5: Barber & Salon Suite -->
+    <section class="section work-showcase">
+      <div class="container">
+        <div class="showcase-header" data-anim>
+          <div class="showcase-kicker"><span class="lang-en">SaaS · Booking</span><span class="lang-ar">حجوزات</span></div>
+          <h3 class="showcase-title"><span class="lang-en">Barber &amp; Salon Suite</span><span class="lang-ar">نظام الحلاقة والصالونات</span></h3>
+        </div>
+        <div class="bigcard work-card showcase-card" data-zoom>
+          <span class="mesh mesh-4" data-speed="0.02"></span>
+          <span class="grain"></span>
+          <div class="coming-badge"><span class="lang-en">Coming Soon</span><span class="lang-ar">قريباً</span></div>
+          <div class="bigcard-scrim"></div>
+          <div class="bigcard-body">
+            <p class="bigcard-desc"><span class="lang-en">Queueing and booking system for barbers and salons — walk-ins, slots and reminders.</span><span class="lang-ar">نظام طوابير وحجوزات للحلاقين والصالونات — حضور فوري، مواعيد وتذكيرات.</span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FLOW GRID SHOWCASE ===== -->
+    <section id="flowgrid" class="section">
+      <div class="container">
+        <div class="section-label" data-anim><span class="lang-en">Ecosystem · Sub-brand</span><span class="lang-ar">المنظومة · علامة فرعية</span></div>
+        <h2 data-anim data-delay="1" style="margin-bottom:1rem;max-width:14ch">
+          <span class="lang-en">Under the <span class="brand"><span class="b-flow">flow</span><span class="b-plus">+</span></span> umbrella.</span>
+          <span class="lang-ar">تحت مظلة <span class="brand"><span class="b-flow">flow</span><span class="b-plus">+</span></span></span>
+        </h2>
+        <p class="text-lg" data-anim data-delay="2" style="max-width:560px;margin-bottom:3rem">
+          <span class="lang-en">One studio inside the system — built entirely on automation.</span>
+          <span class="lang-ar">استوديو داخل النظام — مبني بالكامل على الأتمتة.</span>
+        </p>
+
+        <div class="flowgrid-stage" data-zoom>
+          <span class="mesh mesh-4" style="filter:blur(60px) saturate(140%)"></span>
+          <span class="grain"></span>
+          <div class="bigcard-scrim"></div>
+
+          <!-- floating nodes routing into core -->
+          <div class="fg-node float-el" style="top:14%;left:10%;animation:floatA 9s ease-in-out infinite"><span class="lang-en">AI Content</span><span class="lang-ar">محتوى ذكي</span></div>
+          <div class="fg-node float-el" style="top:24%;right:12%;animation:floatB 11s ease-in-out infinite"><span class="lang-en">UGC Automation</span><span class="lang-ar">أتمتة المحتوى</span></div>
+          <div class="fg-node float-el" style="bottom:20%;left:14%;animation:floatC 10s ease-in-out infinite"><span class="lang-en">Social Strategy</span><span class="lang-ar">استراتيجية اجتماعية</span></div>
+          <div class="fg-node float-el" style="bottom:16%;right:16%;animation:floatA 12s ease-in-out infinite"><span class="lang-en">Video Engine</span><span class="lang-ar">محرّك الفيديو</span></div>
+          <div class="fg-node float-el" style="top:46%;left:6%;animation:floatB 13s ease-in-out infinite"><span class="lang-en">Captions</span><span class="lang-ar">ترجمات</span></div>
+          <div class="fg-node float-el" style="top:50%;right:7%;animation:floatC 9.5s ease-in-out infinite"><span class="lang-en">Scheduling</span><span class="lang-ar">جدولة</span></div>
+
+          <div class="flowgrid-core">
+            <div class="bigcard-kicker" style="justify-content:center"><span class="lang-en">Content &amp; UGC Automation</span><span class="lang-ar">أتمتة المحتوى</span></div>
+            <h3>Flow Grid</h3>
+            <p style="margin-top:0.8rem;max-width:30ch;margin-left:auto;margin-right:auto;color:rgba(255,255,255,0.82)">
+              <span class="lang-en">Every piece of content — generated, edited, scheduled and shipped. Automatically.</span>
+              <span class="lang-ar">كل قطعة محتوى — تُولّد وتُحرّر وتُجدول وتُنشر. تلقائياً.</span>
+            </p>
+            <a href="#contact" class="btn-mesh" style="margin-top:1.6rem"><span class="mesh mesh-4"></span><span class="lang-en">Work with Flow Grid</span><span class="lang-ar">اعمل مع فلو غريد</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== MEET THE BRAIN (teaser) ===== -->
+    <section id="founder" class="section section-alt">
+      <div class="container">
+        <div class="brain-teaser" data-zoom>
+          <span class="mesh mesh-5" style="opacity:0.55"></span>
+          <span class="grain"></span>
+          <div class="bigcard-scrim"></div>
+          <div class="bt-content">
+            <div class="section-label"><span class="lang-en">Founder</span><span class="lang-ar">المؤسس</span></div>
+            <h2 style="max-width:20ch"><span class="lang-en">Meet the brain behind <span class="brand"><span class="b-flow">flow</span><span class="b-plus">+</span></span>.</span><span class="lang-ar">تعرّف على العقل وراء <span class="brand"><span class="b-flow">flow</span><span class="b-plus">+</span></span></span></h2>
+            <p class="text-lg" style="max-width:46ch"><span class="lang-en">A small story about who's behind the work — what we believe in, how we build, and where we're heading next.</span><span class="lang-ar">قصّة قصيرة عمّن يقف وراء العمل — بماذا نؤمن، وكيف نبني، وإلى أين نتجه.</span></p>
+            <a href="founder.html" class="btn-mesh"><span class="mesh mesh-1"></span><span class="lang-en"><span style="color:#000000">Read more</span></span><span class="lang-ar">اقرأ المزيد</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CONTACT ===== -->
+    <section id="contact" class="section">
+      <div class="container" style="text-align:center;position:relative">
+        <div class="orb" style="width:460px;height:460px;top:0;left:-4%;background:radial-gradient(circle,rgba(102,15,36,0.4),transparent 70%);opacity:0.4;animation:orbDrift2 22s ease-in-out infinite" data-speed="0.02"></div>
+        <div class="orb" style="width:400px;height:400px;bottom:0;right:-3%;background:radial-gradient(circle,rgba(88,166,255,0.25),transparent 70%);opacity:0.4;animation:orbDrift1 26s ease-in-out infinite" data-speed="0.03"></div>
+
+        <div class="section-label" data-anim style="position:relative;z-index:2"><span class="lang-en">Ready?</span><span class="lang-ar">مستعد؟</span></div>
+        <h2 data-anim data-delay="1" style="position:relative;z-index:2;margin-bottom:1.2rem"><span class="lang-en">Let's build something.</span><span class="lang-ar">لنبنِ شيئاً معاً.</span></h2>
+        <p class="text-lg" data-anim data-delay="2" style="max-width:520px;margin:0 auto 3rem;position:relative;z-index:2">
+          <span class="lang-en">An AI system, a web application, or a product from scratch — we're ready.</span>
+          <span class="lang-ar">نظام ذكاء اصطناعي، تطبيق ويب، أو منتج من الصفر — نحن جاهزون.</span>
+        </p>
+
+        <div class="grid grid-3" style="position:relative;z-index:2;text-align:left">
+          <a href="https://wa.me/971558461197" target="_blank" rel="noopener" class="contact-card" data-tilt data-zoom>
+            <span class="mesh mesh-3" data-speed="0.015"></span>
+            <span class="grain"></span>
+            <div class="bigcard-scrim"></div>
+            <div class="contact-card-body">
+              <div class="label">WhatsApp</div>
+              <div class="handle" dir="ltr" style="color: rgb(255, 255, 255)">+971 55 846 1197</div>
+            </div>
+          </a>
+          <a href="https://instagram.com/itsflowplus" target="_blank" rel="noopener" class="contact-card" data-tilt data-zoom>
+            <span class="mesh mesh-1" data-speed="0.02"></span>
+            <span class="grain"></span>
+            <div class="bigcard-scrim"></div>
+            <div class="contact-card-body">
+              <div class="label">Instagram</div>
+              <div class="handle" dir="ltr" style="color: rgb(255, 255, 255)">@itsflowplus</div>
+            </div>
+          </a>
+          <a href="mailto:hello@flowplus.ae" class="contact-card" data-tilt data-zoom>
+            <span class="mesh mesh-5" data-speed="0.015"></span>
+            <span class="grain"></span>
+            <div class="bigcard-scrim"></div>
+            <div class="contact-card-body">
+              <div class="label"><span class="lang-en">Email</span><span class="lang-ar">البريد</span></div>
+              <div class="handle" dir="ltr" style="color: rgb(255, 255, 255)">hello@flowplus.ae</div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-logo"><span class="brand"><span class="b-flow">flow</span><span class="b-plus">+</span></span></div>
+      <p><span class="lang-en">Flow Plus for Computers and Information Systems · Abu Dhabi, UAE</span><span class="lang-ar">فلو بلس لأنظمة الحاسوب والمعلومات · أبوظبي، الإمارات</span></p>
+    </div>
+  </footer>
+
+  <script src="image-slot.js"></script>
+  <script src="js/flow-plus.js"></script>
+</body>
+</html>
