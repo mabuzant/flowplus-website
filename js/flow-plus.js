@@ -198,6 +198,41 @@
     render();
   }
 
+  /* ===== EXTERNAL FORM DISCLAIMER MODAL (TEMPORARY) ===== */
+  const extModal = document.getElementById('extModal');
+  if (extModal) {
+    const continueBtn = document.getElementById('extModalContinue');
+    let pendingUrl = null;
+
+    function openExtModal(url) {
+      pendingUrl = url;
+      if (continueBtn) continueBtn.setAttribute('href', url);
+      extModal.classList.add('open');
+      extModal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeExtModal() {
+      extModal.classList.remove('open');
+      extModal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll('.js-external-form').forEach(el => {
+      el.addEventListener('click', e => {
+        e.preventDefault();
+        openExtModal(el.getAttribute('href'));
+      });
+    });
+
+    extModal.querySelectorAll('[data-ext-close]').forEach(el => {
+      el.addEventListener('click', closeExtModal);
+    });
+    if (continueBtn) continueBtn.addEventListener('click', closeExtModal);
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && extModal.classList.contains('open')) closeExtModal();
+    });
+  }
+
   updateNav();
   applyParallax();
 })();

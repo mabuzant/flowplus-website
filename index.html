@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/flow-plus.css?v=5">
+  <link rel="stylesheet" href="css/flow-plus.css?v=7">
   <style>
     .section-alt { background: var(--bg-deep); }
     .hero-float-photo { position: absolute; border-radius: var(--radius-md); overflow: hidden; z-index: 1; border: 1px solid rgba(255,255,255,0.08); }
@@ -106,6 +106,21 @@
       <div class="scroll-hint">
         <span class="lang-en">Scroll</span><span class="lang-ar">مرّر</span>
         <div class="scroll-line"></div>
+      </div>
+    </section>
+
+    <!-- ===== WORKSHOP CARD (TEMPORARY) ===== -->
+    <section id="workshop" class="section" dir="rtl">
+      <div class="container">
+        <div class="workshop-wrap" data-zoom>
+          <a href="https://forms.gle/uEz9FjVU8hKttETf6" class="workshop-card js-external-form" aria-label="ورشة الذكاء الاصطناعي — لغة المستقبل">
+            <img src="assets/workshop-ai.png" alt="ورشة تدريبية حضورية — الذكاء الاصطناعي، لغة المستقبل" loading="lazy">
+          </a>
+          <a href="https://forms.gle/uEz9FjVU8hKttETf6" class="btn-mesh workshop-cta js-external-form">
+            <span class="mesh mesh-1"></span>
+            <span style="color:#000000">سجّل في الورشة الآن</span>
+          </a>
+        </div>
       </div>
     </section>
 
@@ -389,6 +404,32 @@
       </div>
     </section>
   </main>
+
+  <!-- ===== EXTERNAL LINK DISCLAIMER MODAL (TEMPORARY) ===== -->
+  <div class="ext-modal" id="extModal" dir="rtl" aria-hidden="true">
+    <div class="ext-modal-backdrop" data-ext-close></div>
+    <div class="ext-modal-card" role="dialog" aria-modal="true" aria-labelledby="extModalTitle" aria-describedby="extModalBody">
+      <span class="mesh mesh-1"></span>
+      <span class="grain"></span>
+      <div class="ext-modal-body">
+        <div class="ext-modal-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+        </div>
+        <h3 class="ext-modal-title" id="extModalTitle">أنت على وشك مغادرة الموقع</h3>
+        <p class="ext-modal-text" id="extModalBody">
+          سيأخذك رابط التسجيل إلى نموذج مستضاف على منصة خارجية تابعة لطرف ثالث، خارج موقع <span class="brand"><span class="b-flow">flow</span><span class="b-plus">+</span></span>.
+          للانتقال إلى صفحة التسجيل، اضغط «متابعة».
+        </p>
+        <div class="ext-modal-actions">
+          <a href="#" class="btn-mesh ext-modal-continue" id="extModalContinue" target="_blank" rel="noopener noreferrer">
+            <span class="mesh mesh-1"></span>
+            <span style="color:#000000">متابعة</span>
+          </a>
+          <button type="button" class="btn-ghost ext-modal-cancel" data-ext-close>إلغاء</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <footer class="footer">
     <div class="container">
