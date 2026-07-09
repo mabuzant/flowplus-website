@@ -8,7 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/flow-plus.css?v=7">
+  <link rel="preload" as="image" href="assets/workshop-ai.webp" type="image/webp" fetchpriority="high">
+  <link rel="stylesheet" href="css/flow-plus.css?v=8">
   <style>
     .section-alt { background: var(--bg-deep); }
     .hero-float-photo { position: absolute; border-radius: var(--radius-md); overflow: hidden; z-index: 1; border: 1px solid rgba(255,255,255,0.08); }
@@ -63,7 +64,10 @@
       <div class="container">
         <div class="workshop-wrap" data-zoom>
           <a href="https://forms.gle/uEz9FjVU8hKttETf6" class="workshop-card js-external-form" aria-label="ورشة الذكاء الاصطناعي — لغة المستقبل">
-            <img src="assets/workshop-ai.png" alt="ورشة تدريبية حضورية — الذكاء الاصطناعي، لغة المستقبل" fetchpriority="high" decoding="async">
+            <picture>
+              <source srcset="assets/workshop-ai.webp" type="image/webp">
+              <img src="assets/workshop-ai.jpg" alt="ورشة تدريبية حضورية — الذكاء الاصطناعي، لغة المستقبل" width="1080" height="1350" fetchpriority="high" decoding="async">
+            </picture>
           </a>
           <a href="https://forms.gle/uEz9FjVU8hKttETf6" class="btn-mesh workshop-cta js-external-form">
             <span class="mesh mesh-1"></span>

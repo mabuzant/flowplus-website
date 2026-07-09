@@ -617,6 +617,7 @@ body.rtl .stack-card.flick { transform: translateX(-125%) rotate(-14deg) !import
   box-shadow: 0 30px 80px rgba(0,0,0,0.5);
   transition: transform 0.6s var(--ease), box-shadow 0.6s var(--ease);
 }
+.workshop-card picture { display: block; }
 .workshop-card img { display: block; width: 100%; height: auto; }
 @media (pointer: fine) {
   .workshop-card:hover { transform: translateY(-8px); box-shadow: 0 40px 100px rgba(0,0,0,0.6); }
@@ -638,9 +639,10 @@ body.rtl .stack-card.flick { transform: translateX(-125%) rotate(-14deg) !import
   background: #0a0a0c; border: 1px solid rgba(255,255,255,0.12);
   box-shadow: 0 40px 120px rgba(0,0,0,0.7);
   transform: translateY(18px) scale(0.97); transition: transform 0.4s var(--ease);
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
 }
 .ext-modal.open .ext-modal-card { transform: translateY(0) scale(1); }
-.ext-modal-card .mesh { position: absolute; inset: -60% -60% auto -60%; height: 60%; filter: blur(70px) saturate(140%); opacity: 0.4; z-index: 0; }
+.ext-modal-card > .mesh { position: absolute; inset: -60% -60% auto -60%; height: 60%; filter: blur(70px) saturate(140%); opacity: 0.4; z-index: 0; }
 .ext-modal-body { position: relative; z-index: 3; padding: clamp(1.8rem, 4vw, 2.6rem); text-align: center; font-family: var(--font-ar); }
 .ext-modal-title, .ext-modal-text, .ext-modal-continue, .ext-modal-cancel { font-family: var(--font-ar); }
 .ext-modal-icon {
