@@ -603,6 +603,8 @@ body.rtl .stack-card.flick { transform: translateX(-125%) rotate(-14deg) !import
 
 
 /* ===== WORKSHOP CARD (TEMPORARY) ===== */
+/* pinned to the very top — extra top padding clears the fixed nav */
+.workshop-section { padding-top: clamp(7rem, 15vw, 11rem); }
 .workshop-wrap {
   display: flex; flex-direction: column; align-items: center;
   gap: clamp(1.4rem, 3vw, 2rem);
