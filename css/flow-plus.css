@@ -619,7 +619,7 @@ body.rtl .stack-card.flick { transform: translateX(-125%) rotate(-14deg) !import
 @media (pointer: fine) {
   .workshop-card:hover { transform: translateY(-8px); box-shadow: 0 40px 100px rgba(0,0,0,0.6); }
 }
-.workshop-cta { min-width: 260px; justify-content: center; text-align: center; }
+.workshop-cta { min-width: 260px; justify-content: center; text-align: center; font-family: var(--font-ar); }
 
 /* ===== EXTERNAL LINK DISCLAIMER MODAL (TEMPORARY) ===== */
 .ext-modal {
@@ -639,7 +639,8 @@ body.rtl .stack-card.flick { transform: translateX(-125%) rotate(-14deg) !import
 }
 .ext-modal.open .ext-modal-card { transform: translateY(0) scale(1); }
 .ext-modal-card .mesh { position: absolute; inset: -60% -60% auto -60%; height: 60%; filter: blur(70px) saturate(140%); opacity: 0.4; z-index: 0; }
-.ext-modal-body { position: relative; z-index: 3; padding: clamp(1.8rem, 4vw, 2.6rem); text-align: center; }
+.ext-modal-body { position: relative; z-index: 3; padding: clamp(1.8rem, 4vw, 2.6rem); text-align: center; font-family: var(--font-ar); }
+.ext-modal-title, .ext-modal-text, .ext-modal-continue, .ext-modal-cancel { font-family: var(--font-ar); }
 .ext-modal-icon {
   width: 56px; height: 56px; margin: 0 auto 1.2rem; color: #fff;
   display: flex; align-items: center; justify-content: center;
