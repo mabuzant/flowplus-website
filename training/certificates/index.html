@@ -122,6 +122,16 @@
     .share-btn.ig svg { color: #E1306C; }
     @media (max-width: 520px) { .share-btns { flex-direction: column; } }
 
+    .caption-box { display: none; margin-top: 1rem; }
+    .caption-box.open { display: block; animation: stepIn 0.35s var(--ease); }
+    .caption-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.78rem; font-weight: 600; color: var(--text-2); }
+    .btn-copy { cursor: pointer; font-family: inherit; font-size: 0.78rem; font-weight: 600; color: var(--text-1);
+      background: rgba(255,255,255,0.06); border: 1px solid var(--glass-border); border-radius: 9px; padding: 0.32rem 0.75rem; transition: background .3s; }
+    .btn-copy:hover { background: rgba(255,255,255,0.13); }
+    #captionText { width: 100%; resize: vertical; padding: 0.85rem 1rem; border-radius: 12px; background: rgba(255,255,255,0.04);
+      border: 1px solid var(--glass-border); color: var(--text-2); font-family: inherit; font-size: 0.86rem; line-height: 1.55; outline: none; }
+    body.rtl #captionText { text-align: right; }
+
     .done-note { text-align: center; }
     .done-note .tick { width: 56px; height: 56px; border-radius: 50%; background: rgba(123,224,168,0.14); border: 1px solid rgba(123,224,168,0.4); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.2rem; color: #7be0a8; font-size: 1.6rem; }
 
@@ -213,6 +223,14 @@
               </button>
             </div>
             <div class="msg" id="shareMsg"></div>
+
+            <div class="caption-box" id="captionBox">
+              <div class="caption-head">
+                <span class="lang-en">Your LinkedIn caption</span><span class="lang-ar">نص منشور لينكدإن</span>
+                <button class="btn-copy" id="copyCap"><span class="lang-en">Copy</span><span class="lang-ar">نسخ</span></button>
+              </div>
+              <textarea id="captionText" readonly rows="7"></textarea>
+            </div>
           </div>
         </section>
 
@@ -395,21 +413,27 @@
       instagramHandle: '@itsflowplus',
       company: 'flow+',
       person: 'Mohammad Abu Zant',
-      // TODO — drop in the real LinkedIn URLs:
-      companyUrl: 'https://www.linkedin.com/company/itsflowplus',
-      personUrl:  'https://www.linkedin.com/in/mohammad-abu-zant',
+      personAr: 'محمد أبو زنط',
+      companyUrl: 'https://www.linkedin.com/company/flow-plus-ae',
+      personUrl:  'https://www.linkedin.com/in/mabuzant',
       site: 'flowplus.ae'
     };
     var shareCache = { ig: null, li: null };
 
+    function fmtDateAr(iso) {
+      if (!iso) return '';
+      var d = new Date(iso + 'T00:00:00');
+      if (isNaN(d.getTime())) return iso;
+      try { return d.toLocaleDateString('ar', { day: 'numeric', month: 'long', year: 'numeric' }); }
+      catch (e) { return fmtDate(iso); }
+    }
     function linkedInCaption(claim) {
       var w = (claim && claim.workshop) || {};
-      var d = fmtDate(w.date);
-      var en = 'I had the privilege of attending the "' + w.nameEn + '" workshop on ' + d +
+      var en = 'I had the privilege of attending the "' + w.nameEn + '" workshop on ' + fmtDate(w.date) +
                ', presented by ' + SHARE.company + '.\n\nGrateful to ' + SHARE.company + ' and ' +
                SHARE.person + ' for a fantastic session on the future of AI.';
-      var ar = 'يسعدني أنني حضرت ورشة "' + (w.nameAr || w.nameEn) + '" بتاريخ ' + d +
-               '، المقدَّمة من ' + SHARE.company + '.\n\nشكرًا لـ ' + SHARE.company + ' و' + SHARE.person +
+      var ar = 'يسعدني أنني حضرت ورشة "' + (w.nameAr || w.nameEn) + '" بتاريخ ' + fmtDateAr(w.date) +
+               '، المقدَّمة من ' + SHARE.company + '.\n\nشكرًا لـ ' + SHARE.company + ' و' + SHARE.personAr +
                ' على جلسة رائعة حول مستقبل الذكاء الاصطناعي.';
       return en + '\n\n———\n\n' + ar + '\n\n' + SHARE.companyUrl + '\n' + SHARE.personUrl +
              '\n\n#flowplus #AI #Workshop';
@@ -515,6 +539,25 @@
       }).catch(function (e) { console.error(e); });
     }
 
+    /* copy text with clipboard API, falling back to a hidden textarea */
+    function copyText(txt) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        return navigator.clipboard.writeText(txt).then(function () { return true; }).catch(function () { return execCopy(txt); });
+      }
+      return Promise.resolve(execCopy(txt));
+    }
+    function execCopy(txt) {
+      try {
+        var ta = $('captionText'); ta.focus(); ta.select();
+        var ok = document.execCommand('copy'); window.getSelection().removeAllRanges();
+        return ok;
+      } catch (e) { return false; }
+    }
+    function revealCaption(cap) {
+      $('captionText').value = cap;
+      $('captionBox').classList.add('open');
+    }
+
     function doShare(kind) {
       var msg = $('shareMsg'); msg.className = 'msg'; msg.textContent = t('Preparing image…', '…جاري تجهيز الصورة');
       var cached = kind === 'ig' ? shareCache.ig : shareCache.li;
@@ -522,12 +565,20 @@
         : getCertCanvas().then(function (cc) { return canvasToBlob(kind === 'ig' ? buildInstagram(cc) : buildLinkedIn(cc), kind === 'ig' ? 0.9 : 0.92); });
       var filename = kind === 'ig' ? 'flowplus_story.jpg' : 'flowplus_linkedin.jpg';
 
+      // For LinkedIn: surface the caption + copy it now (within the user gesture).
+      if (kind === 'li') { revealCaption(linkedInCaption(existing)); copyText(linkedInCaption(existing)); }
+
       blobP.then(function (blob) {
         var file = new File([blob], filename, { type: 'image/jpeg' });
-        var data = kind === 'li' ? { files: [file], text: linkedInCaption(existing) } : { files: [file] };
+        // Share the IMAGE ONLY — LinkedIn/Instagram reliably attach a single image
+        // (a combined text+image share made LinkedIn drop the image).
         if (navigator.canShare && navigator.canShare({ files: [file] })) {
-          return navigator.share(data).then(function () { msg.textContent = ''; })
-            .catch(function (err) { if (!err || err.name !== 'AbortError') fallbackShare(kind, blob, filename); else msg.textContent = ''; });
+          return navigator.share({ files: [file] }).then(function () {
+            if (kind === 'li') { msg.className = 'msg ok'; msg.textContent = t('Caption copied — paste it into your LinkedIn post.', '.تم نسخ النص — الصقه في منشور لينكدإن'); }
+            else { msg.textContent = ''; }
+          }).catch(function (err) {
+            if (!err || err.name !== 'AbortError') fallbackShare(kind, blob, filename); else msg.textContent = '';
+          });
         }
         fallbackShare(kind, blob, filename);
       }).catch(function (e) {
@@ -535,7 +586,7 @@
       });
     }
 
-    // Desktop / no-Web-Share fallback: download the image (+ copy caption for LinkedIn).
+    // No Web Share (mostly desktop): save the image, copy caption, open the target.
     function fallbackShare(kind, blob, filename) {
       var msg = $('shareMsg'); msg.className = 'msg ok';
       var url = URL.createObjectURL(blob);
@@ -543,13 +594,13 @@
       document.body.appendChild(a); a.click(); a.remove();
       setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
       if (kind === 'li') {
-        if (navigator.clipboard) navigator.clipboard.writeText(linkedInCaption(existing)).catch(function () {});
+        copyText(linkedInCaption(existing));
         try { window.open('https://www.linkedin.com/feed/?shareActive=true', '_blank', 'noopener'); } catch (e) {}
-        msg.textContent = t('Image downloaded and caption copied — attach the image in the LinkedIn post that opened.',
-                            '.تم تنزيل الصورة ونسخ النص — أرفق الصورة في منشور LinkedIn الذي فُتح');
+        msg.textContent = t('Image saved to your device and caption copied — in the LinkedIn post that opened, attach the image and paste the caption.',
+                            '.تم حفظ الصورة على جهازك ونسخ النص — في منشور لينكدإن الذي فُتح، أرفق الصورة والصق النص');
       } else {
-        msg.textContent = t('Story image downloaded — open Instagram on your phone to post it to your story.',
-                            '.تم تنزيل صورة الاستوري — افتح إنستغرام على هاتفك لنشرها في قصتك');
+        msg.textContent = t('Story image saved to your device — open Instagram to post it to your story.',
+                            '.تم حفظ صورة الاستوري على جهازك — افتح إنستغرام لنشرها في قصتك');
       }
     }
 
@@ -637,6 +688,15 @@
     });
     $('shareLinkedIn').addEventListener('click', function () { if (existing) doShare('li'); });
     $('shareInstagram').addEventListener('click', function () { if (existing) doShare('ig'); });
+    $('copyCap').addEventListener('click', function () {
+      var btn = this;
+      Promise.resolve(copyText($('captionText').value)).then(function () {
+        var en = btn.querySelector('.lang-en'), ar = btn.querySelector('.lang-ar');
+        var oe = en.textContent, oa = ar.textContent;
+        en.textContent = 'Copied'; ar.textContent = 'تم النسخ';
+        setTimeout(function () { en.textContent = oe; ar.textContent = oa; }, 1200);
+      });
+    });
 
   })();
   </script>
