@@ -60,43 +60,44 @@
     .preview-shell { margin: 0 auto 1.6rem; width: 100%; max-width: 520px; border-radius: 14px; overflow: hidden; border: 1px solid var(--glass-border); }
     .preview-scaler { transform-origin: top left; }
 
-    /* ===== THE CERTIFICATE (rendered at real size, off-screen for capture) ===== */
+    /* ===== THE CERTIFICATE — flow+ Printable Mode (§10b): white paper,
+       near-black ink, one accent stop, hairlines. Rendered off-screen. ===== */
     #certStage { position: fixed; left: -20000px; top: 0; }
     .certificate {
       width: 1123px; height: 794px; position: relative; overflow: hidden;
-      background: #05050c; color: #fff; font-family: var(--font-en);
-      display: flex; flex-direction: column; box-sizing: border-box;
+      background: #FFFFFF; color: #0A0A0A; font-family: var(--font-en);
+      box-sizing: border-box; display: flex; flex-direction: column;
     }
-    /* soft glow via radial-gradient transparency only — NO filter:blur
-       (html2canvas rasterizes CSS blur very slowly). */
-    .certificate .c-mesh { position: absolute; border-radius: 50%; opacity: 0.6; }
-    .certificate .c-mesh.a { top: -220px; left: -160px; width: 620px; height: 620px;
-      background: radial-gradient(circle at 35% 35%, #6d5cff 0%, transparent 62%),
-                  radial-gradient(circle at 70% 60%, #b768ff 0%, transparent 60%); }
-    .certificate .c-mesh.b { bottom: -260px; right: -180px; width: 640px; height: 640px;
-      background: radial-gradient(circle at 40% 40%, #2f7bff 0%, transparent 60%),
-                  radial-gradient(circle at 70% 70%, #12d6c8 0%, transparent 60%); }
-    .certificate .c-frame { position: absolute; inset: 34px; border: 1px solid rgba(255,255,255,0.16); border-radius: 26px; pointer-events: none; }
-    .certificate .c-inner { position: relative; z-index: 2; flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 74px 90px; }
+    .certificate .c-edge { position: absolute; inset: 28px; border: 1px solid #E5E5E7; pointer-events: none; }
+    .certificate .c-inner { position: relative; z-index: 2; flex: 1; display: flex; flex-direction: column; padding: 64px 92px 52px; }
 
-    .certificate .c-brand { font-family: var(--font-en); font-size: 40px; letter-spacing: -0.02em; }
+    /* header: wordmark + document type + hairline */
+    .certificate .c-head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 20px; border-bottom: 1px solid #E5E5E7; }
+    .certificate .c-brand { font-family: var(--font-en); font-size: 30px; color: #0A0A0A; letter-spacing: -0.02em; }
     .certificate .c-brand .b-flow { font-weight: 300; }
     .certificate .c-brand .b-plus { font-weight: 700; }
-    .certificate .c-kicker { margin-top: 26px; font-size: 15px; letter-spacing: 0.42em; text-transform: uppercase; color: rgba(255,255,255,0.62); font-weight: 600; }
-    .certificate .c-sub { margin-top: 30px; font-size: 17px; color: rgba(255,255,255,0.62); }
-    .certificate .c-name { margin-top: 12px; font-size: 60px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.05; }
-    .certificate .c-name-ar { margin-top: 6px; font-family: var(--font-ar); font-size: 40px; font-weight: 700; line-height: 1.4; direction: rtl; }
-    .certificate .c-body { margin-top: 26px; font-size: 17px; color: rgba(255,255,255,0.68); line-height: 1.6; max-width: 720px; }
-    .certificate .c-workshop { margin-top: 8px; font-size: 24px; font-weight: 600; color: #fff; }
-    .certificate .c-workshop-ar { margin-top: 4px; font-family: var(--font-ar); font-size: 20px; font-weight: 600; color: rgba(255,255,255,0.9); direction: rtl; }
+    .certificate .c-doctype { font-size: 12px; text-transform: uppercase; letter-spacing: 0.2em; color: #9A9A9C; }
 
-    .certificate .c-foot { margin-top: auto; width: 100%; display: flex; justify-content: space-between; align-items: flex-end; padding-top: 40px; }
-    .certificate .c-foot .col { text-align: center; min-width: 240px; }
-    .certificate .c-foot .line { height: 1px; background: rgba(255,255,255,0.28); margin-bottom: 10px; }
-    .certificate .c-foot .lbl { font-size: 13px; letter-spacing: 0.08em; color: rgba(255,255,255,0.55); }
-    .certificate .c-foot .val { font-size: 17px; font-weight: 600; margin-bottom: 4px; }
+    /* centre block */
+    .certificate .c-mid { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+    .certificate .c-kicker { font-size: 14px; color: #3A3A3C; letter-spacing: 0.02em; }
+    .certificate .c-rule { width: 54px; height: 3px; background: #0C10E3; margin: 15px 0 22px; } /* single accent (mesh-2 stop) */
+    .certificate .c-name { font-size: 58px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.04; color: #0A0A0A; }
+    .certificate .c-name-ar { margin-top: 4px; font-family: var(--font-ar); font-size: 34px; font-weight: 700; color: #0A0A0A; direction: rtl; line-height: 1.5; }
+    .certificate .c-body { margin-top: 22px; font-size: 15px; color: #3A3A3C; }
+    .certificate .c-workshop { margin-top: 6px; font-size: 23px; font-weight: 600; color: #0A0A0A; }
+    .certificate .c-workshop-ar { margin-top: 2px; font-family: var(--font-ar); font-size: 19px; font-weight: 600; color: #0A0A0A; direction: rtl; line-height: 1.5; }
+
+    /* signature / date row — 0.5pt black rule above printed values */
+    .certificate .c-foot { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 18px; }
+    .certificate .c-foot .col { min-width: 240px; text-align: center; }
+    .certificate .c-foot .val { font-size: 16px; font-weight: 600; color: #0A0A0A; margin-bottom: 9px; min-height: 20px; }
     .certificate .c-foot .val-ar { font-family: var(--font-ar); }
-    .certificate .c-code { position: absolute; bottom: 46px; left: 0; right: 0; text-align: center; font-size: 12px; letter-spacing: 0.12em; color: rgba(255,255,255,0.3); }
+    .certificate .c-foot .sig-rule { border-top: 1px solid #0A0A0A; margin-bottom: 8px; }
+    .certificate .c-foot .lbl { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #9A9A9C; }
+
+    /* company footer line */
+    .certificate .c-footer { margin-top: 24px; padding-top: 12px; border-top: 1px solid #E5E5E7; display: flex; justify-content: space-between; font-size: 11px; letter-spacing: 0.04em; color: #9A9A9C; }
 
     .done-note { text-align: center; }
     .done-note .tick { width: 56px; height: 56px; border-radius: 50%; background: rgba(123,224,168,0.14); border: 1px solid rgba(123,224,168,0.4); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.2rem; color: #7be0a8; font-size: 1.6rem; }
@@ -199,7 +200,7 @@
     var ACCESS_CODE = '256008';
 
     var CERT_CONFIG = {
-      workshopEn:  'AI-Powered Creativity Workshop',
+      workshopEn:  'AI Native Creativity Workshop',
       workshopAr:  'ورشة الإبداع بالذكاء الاصطناعي',
       dateEn:      'July 2026',
       dateAr:      'يوليو 2026',
@@ -228,31 +229,38 @@
       var el = document.createElement('div');
       el.className = 'certificate';
       el.innerHTML =
-        '<span class="c-mesh a"></span><span class="c-mesh b"></span>' +
-        '<span class="c-frame"></span>' +
+        '<span class="c-edge"></span>' +
         '<div class="c-inner">' +
-          '<div class="c-brand"><span class="b-flow">flow</span><span class="b-plus">+</span></div>' +
-          '<div class="c-kicker">Certificate of Completion</div>' +
-          '<div class="c-sub">This certificate is proudly presented to</div>' +
-          '<div class="c-name">' + esc(claim.nameEn) + '</div>' +
-          (claim.nameAr ? '<div class="c-name-ar">' + esc(claim.nameAr) + '</div>' : '') +
-          '<div class="c-body">for successfully completing the workshop</div>' +
-          '<div class="c-workshop">' + esc(c.workshopEn) + '</div>' +
-          '<div class="c-workshop-ar">' + esc(c.workshopAr) + '</div>' +
+          '<div class="c-head">' +
+            '<div class="c-brand"><span class="b-flow">flow</span><span class="b-plus">+</span></div>' +
+            '<div class="c-doctype">Certificate of Completion</div>' +
+          '</div>' +
+          '<div class="c-mid">' +
+            '<div class="c-kicker">This certificate is proudly presented to</div>' +
+            '<div class="c-rule"></div>' +
+            '<div class="c-name">' + esc(claim.nameEn) + '</div>' +
+            (claim.nameAr ? '<div class="c-name-ar">' + esc(claim.nameAr) + '</div>' : '') +
+            '<div class="c-body">for successfully completing the workshop</div>' +
+            '<div class="c-workshop">' + esc(c.workshopEn) + '</div>' +
+            '<div class="c-workshop-ar">' + esc(c.workshopAr) + '</div>' +
+          '</div>' +
           '<div class="c-foot">' +
             '<div class="col">' +
               '<div class="val">' + esc(c.dateEn) + '</div>' +
-              '<div class="line"></div>' +
+              '<div class="sig-rule"></div>' +
               '<div class="lbl">Date</div>' +
             '</div>' +
             '<div class="col">' +
               '<div class="val val-ar">' + esc(c.issuerNameEn) + '</div>' +
-              '<div class="line"></div>' +
+              '<div class="sig-rule"></div>' +
               '<div class="lbl">' + esc(c.issuerTitleEn) + '</div>' +
             '</div>' +
           '</div>' +
-        '</div>' +
-        '<div class="c-code">Certificate ID · ' + esc(claim.id) + '</div>';
+          '<div class="c-footer">' +
+            '<span>flow+ · Abu Dhabi, UAE</span>' +
+            '<span>Certificate ID · ' + esc(claim.id) + '</span>' +
+          '</div>' +
+        '</div>';
       return el;
     }
     function esc(s) {
@@ -265,7 +273,7 @@
       var base = (claim.nameEn + '|' + ACCESS_CODE).toUpperCase();
       var h = 0;
       for (var i = 0; i < base.length; i++) { h = (h * 31 + base.charCodeAt(i)) >>> 0; }
-      return 'FP-' + ('000000' + h.toString(36).toUpperCase()).slice(-6);
+      return 'FP' + ('000000' + h.toString(36).toUpperCase()).slice(-6);
     }
 
     /* -------- render preview + off-screen stage -------- */
@@ -311,15 +319,15 @@
       var fontsReady = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
       var ready = Promise.race([fontsReady, new Promise(function (r) { setTimeout(r, 2000); })]);
       ready.then(function () {
-        return html2canvas(currentCertEl, { scale: 2, backgroundColor: '#05050c', useCORS: true, logging: false });
+        return html2canvas(currentCertEl, { scale: 2, backgroundColor: '#ffffff', useCORS: true, logging: false });
       }).then(function (canvas) {
         var jsPDF = window.jspdf.jsPDF;
         var pdf = new jsPDF({ orientation: 'landscape', unit: 'pt', format: 'a4' });
         var pw = pdf.internal.pageSize.getWidth();
         var ph = pdf.internal.pageSize.getHeight();
         pdf.addImage(canvas.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, pw, ph);
-        var safe = (claim.nameEn || 'certificate').replace(/[^\w؀-ۿ]+/g, '-').replace(/^-|-$/g, '');
-        pdf.save('flowplus-certificate-' + safe + '.pdf');
+        var safe = (claim.nameEn || 'certificate').replace(/[^\w؀-ۿ]+/g, '_').replace(/^_|_$/g, '');
+        pdf.save('flowplus_certificate_' + safe + '.pdf');
         msg.className = 'msg ok';
         msg.textContent = t('Downloaded. Check your files.', '.تم التحميل. تحقق من ملفاتك');
       }).catch(function (err) {
