@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>flow+ — Workshop Feedback</title>
+  <meta name="description" content="flow+ workshop feedback survey — استبيان ورشة flow+">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
+  <link rel="stylesheet" href="../../css/flow-plus.css?v=5">
+  <style>
+    /* ===== SURVEY PAGE ===== */
+    .s-hero { min-height: 64vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; position: relative; overflow: hidden; padding: 8rem 0 3.5rem; }
+    .s-hero .container { position: relative; z-index: 5; max-width: 780px; }
+    .s-hero h1 { font-size: clamp(2.6rem, 7vw, 5.5rem); font-weight: 600; letter-spacing: -0.035em; line-height: 1; }
+    body.rtl .s-hero h1 { letter-spacing: 0; line-height: 1.2; }
+    .s-hero .lead { font-size: clamp(1.05rem, 2vw, 1.4rem); color: var(--text-2); max-width: 56ch; margin: 1.6rem auto 2.4rem; }
+    .s-meta { font-size: 0.8rem; color: var(--text-3); letter-spacing: 0.14em; text-transform: uppercase; margin-top: 1.8rem; }
+    body.rtl .s-meta { letter-spacing: 0.06em; }
+
+    .back-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--text-3); text-decoration: none; font-size: 0.85rem; font-weight: 500; transition: color 0.3s; }
+    .back-link:hover { color: var(--text-1); }
+    .back-link .arrow { transition: transform 0.3s; }
+    .back-link:hover .arrow { transform: translateX(-4px); }
+    body.rtl .back-link:hover .arrow { transform: translateX(4px); }
+
+    /* ===== FORM ===== */
+    .survey-wrap { max-width: 820px; margin: 0 auto; }
+    .q-card { position: relative; border-radius: var(--radius-md); overflow: hidden; isolation: isolate; background: rgba(255,255,255,0.035); backdrop-filter: blur(30px) saturate(140%); -webkit-backdrop-filter: blur(30px) saturate(140%); padding: clamp(1.5rem, 3vw, 2.3rem); margin-bottom: 1.3rem; }
+    .q-card::before { content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1px; z-index: 4; background: linear-gradient(140deg, rgba(255,255,255,0.16), rgba(255,255,255,0.02) 55%, rgba(255,255,255,0.08)); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; }
+    .q-head { display: flex; align-items: baseline; gap: 0.85rem; margin-bottom: 1.25rem; position: relative; z-index: 3; }
+    .q-num { font-family: var(--font-en); font-size: 0.82rem; font-weight: 700; letter-spacing: 0.08em; color: rgba(255,255,255,0.55); flex-shrink: 0; min-width: 1.6rem; }
+    body.rtl .q-num { font-family: var(--font-en) !important; }
+    .q-label { font-size: clamp(1.05rem, 2vw, 1.3rem); font-weight: 500; color: var(--text-1); line-height: 1.4; letter-spacing: -0.01em; }
+    body.rtl .q-label { letter-spacing: 0; line-height: 1.6; }
+    .q-optional { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3); margin-inline-start: 0.5rem; }
+    .q-body { position: relative; z-index: 3; }
+    .q-sub { font-size: 0.86rem; color: var(--text-3); font-weight: 500; margin: 0 0 0.6rem; }
+
+    /* selectable option pills (radio / checkbox) */
+    .opts { display: flex; flex-wrap: wrap; gap: 0.65rem; }
+    .opts.stack { flex-direction: column; align-items: stretch; }
+    .opt { position: relative; display: inline-flex; align-items: center; gap: 0.6rem; padding: 0.8rem 1.25rem; border-radius: 100px; cursor: pointer; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); color: var(--text-2); font-size: 0.96rem; font-weight: 500; transition: all 0.3s var(--ease); user-select: none; }
+    .opt:hover { background: rgba(255,255,255,0.08); color: var(--text-1); }
+    .opt input { position: absolute; opacity: 0; width: 0; height: 0; }
+    .opt .dot { width: 15px; height: 15px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.3); flex-shrink: 0; position: relative; transition: all 0.25s; }
+    .opt.check .dot { border-radius: 5px; }
+    .opt input:checked ~ .dot { border-color: #fff; background: #fff; }
+    .opt input:checked ~ .dot::after { content: ''; position: absolute; inset: 3px; border-radius: inherit; background: #0b0b0d; }
+    .opt.check input:checked ~ .dot::after { inset: 2px 4px; border-radius: 0; border-left: 2px solid #0b0b0d; border-bottom: 2px solid #0b0b0d; background: transparent; transform: rotate(-45deg) translate(1px,-1px); }
+    .opt:has(input:checked) { background: rgba(255,255,255,0.13); color: var(--text-1); border-color: rgba(255,255,255,0.4); }
+    .opt:focus-within { outline: 2px solid rgba(120,160,255,0.5); outline-offset: 2px; }
+
+    /* numeric scale */
+    .scale { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .scale-item { position: relative; }
+    .scale-item input { position: absolute; opacity: 0; width: 0; height: 0; }
+    .scale-item label { display: flex; align-items: center; justify-content: center; min-width: 46px; height: 46px; padding: 0 0.4rem; border-radius: 14px; cursor: pointer; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); color: var(--text-2); font-family: var(--font-en); font-size: 1rem; font-weight: 600; transition: all 0.25s var(--ease); }
+    .scale-item label:hover { background: rgba(255,255,255,0.09); color: var(--text-1); transform: translateY(-2px); }
+    .scale-item input:checked + label { background: #fff; color: #0b0b0d; border-color: #fff; transform: translateY(-2px); }
+    .scale-item input:focus-visible + label { outline: 2px solid rgba(120,160,255,0.6); outline-offset: 2px; }
+    .scale-ends { display: flex; justify-content: space-between; margin-top: 0.6rem; font-size: 0.75rem; color: var(--text-3); }
+
+    .scale-pair { display: grid; grid-template-columns: 1fr; gap: 1.3rem; }
+
+    /* text fields */
+    .field { width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; padding: 0.9rem 1.1rem; color: var(--text-1); font-family: inherit; font-size: 1rem; line-height: 1.55; transition: all 0.3s; resize: vertical; }
+    .field::placeholder { color: var(--text-3); }
+    .field:focus { outline: none; border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.07); }
+    textarea.field { min-height: 90px; }
+    .reveal-field { max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.4s var(--ease), opacity 0.35s, margin 0.4s; margin-top: 0; }
+    .reveal-field.open { max-height: 200px; opacity: 1; margin-top: 0.85rem; }
+
+    /* submit + status */
+    .submit-row { display: flex; flex-direction: column; align-items: center; gap: 1rem; margin: 2.4rem 0 1rem; text-align: center; }
+    .btn-submit { border: none; cursor: pointer; font-family: inherit; min-width: 240px; justify-content: center; }
+    .btn-submit[disabled] { opacity: 0.55; cursor: progress; }
+    .form-note { font-size: 0.82rem; color: var(--text-3); max-width: 46ch; }
+    .err-note { color: #ff8f8f; font-size: 0.88rem; display: none; }
+    .err-note.show { display: block; }
+
+    /* success state */
+    .success { display: none; text-align: center; max-width: 640px; margin: 0 auto; padding: clamp(2rem,5vw,3.5rem) 0; }
+    .success.show { display: block; }
+    .success .check { width: 84px; height: 84px; margin: 0 auto 1.6rem; border-radius: 50%; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+    .success .check svg { position: relative; z-index: 3; width: 40px; height: 40px; }
+    .success h2 { font-size: clamp(2rem, 5vw, 3.4rem); margin-bottom: 1rem; }
+
+    .config-banner { display: none; max-width: 820px; margin: 0 auto 1.5rem; padding: 0.9rem 1.2rem; border-radius: 16px; background: rgba(255,180,90,0.08); border: 1px solid rgba(255,180,90,0.25); color: #ffcf9e; font-family: var(--font-en); font-size: 0.82rem; line-height: 1.5; }
+    .config-banner.show { display: block; }
+    body.rtl .config-banner { font-family: var(--font-en) !important; direction: ltr; text-align: left; }
+
+    .menu-btn { display: none; }
+    @media (max-width: 640px) {
+      .scale-item label { min-width: 40px; height: 42px; font-size: 0.92rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-vignette"></div>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="../../index.html" class="nav-logo"><span class="brand"><span class="b-flow">flow</span><span class="b-plus">+</span></span></a>
+      <div class="nav-links">
+        <a href="../../index.html" class="back-link"><span class="arrow">←</span><span class="lang-en">Back to home</span><span class="lang-ar">العودة للرئيسية</span></a>
+        <span class="lang-toggle-wrap">
+          <span class="lang-toggle">
+            <button class="lang-btn active" data-lang="en">EN</button>
+            <button class="lang-btn" data-lang="ar">ع</button>
+          </span>
+        </span>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <!-- HERO -->
+    <section class="s-hero">
+      <div class="hero-fluid">
+        <span class="fluid-blob mesh-1" style="top:-12%;left:-8%;animation:morphA 28s ease-in-out infinite"></span>
+        <span class="fluid-blob mesh-4" style="bottom:-14%;right:-8%;animation:morphB 32s ease-in-out infinite"></span>
+        <span class="fluid-blob mesh-3" style="top:20%;right:24%;width:28vw;height:28vw;animation:morphA 22s ease-in-out infinite reverse"></span>
+      </div>
+      <div class="container">
+        <div class="section-label" data-anim><span class="lang-en">Workshop feedback</span><span class="lang-ar">استبيان الورشة</span></div>
+        <h1 data-anim data-delay="1">
+          <span class="lang-en">How was today?</span>
+          <span class="lang-ar">كيف كان يومك؟</span>
+        </h1>
+        <p class="lead" data-anim data-delay="2">
+          <span class="lang-en">Two minutes, thirteen questions. Your answers shape Part Two — be honest.</span>
+          <span class="lang-ar">دقيقتان، ثلاثة عشر سؤالاً. إجاباتك تصنع الجزء الثاني — كن صريحاً.</span>
+        </p>
+        <a href="#form" class="btn-mesh" data-anim data-delay="3">
+          <span class="mesh mesh-1"></span>
+          <span style="color:#000"><span class="lang-en">Start the survey</span><span class="lang-ar">ابدأ الاستبيان</span></span>
+        </a>
+        <div class="s-meta"><span class="lang-en">Anonymous · Optional contact at the end</span><span class="lang-ar">مجهول الهوية · التواصل اختياري في النهاية</span></div>
+      </div>
+    </section>
+
+    <!-- FORM -->
+    <section class="section" style="padding-top:1rem" id="form">
+      <div class="container">
+
+        <form class="survey-wrap" id="surveyForm" novalidate>
+
+          <!-- Q1 -->
+          <div class="q-card">
+            <div class="q-head"><span class="q-num">01</span><span class="q-label"><span class="lang-en">Did you leave with something you actually built yourself?</span><span class="lang-ar">هل خرجت اليوم بمخرج جاهز بنيته بنفسك؟</span></span></div>
+            <div class="q-body"><div class="opts" role="radiogroup">
+              <label class="opt"><input type="radio" name="q1" value="Yes, complete / نعم، مكتمل" required><span class="dot"></span><span class="lang-en">Yes, complete</span><span class="lang-ar">نعم، مكتمل</span></label>
+              <label class="opt"><input type="radio" name="q1" value="Yes, partial / نعم، جزئي"><span class="dot"></span><span class="lang-en">Yes, partial</span><span class="lang-ar">نعم، جزئي</span></label>
+              <label class="opt"><input type="radio" name="q1" value="No / لا"><span class="dot"></span><span class="lang-en">No</span><span class="lang-ar">لا</span></label>
+            </div></div>
+          </div>
+
+          <!-- Q2 -->
+          <div class="q-card">
+            <div class="q-head"><span class="q-num">02</span><span class="q-label"><span class="lang-en">How likely are you to recommend this workshop to a friend?</span><span class="lang-ar">ما احتمال أن ترشّح هذه الورشة لصديق؟</span></span></div>
+            <div class="q-body">
+              <div class="scale" role="radiogroup" id="q2scale"></div>
+              <div class="scale-ends"><span><span class="lang-en">Not likely</span><span class="lang-ar">غير مرجّح</span></span><span><span class="lang-en">Very likely</span><span class="lang-ar">مرجّح جداً</span></span></div>
+            </div>
+          </div>
+
+          <!-- Q3 -->
+          <div class="q-card">
+            <div class="q-head"><span class="q-num">03</span><span class="q-label"><span class="lang-en">Rate the day overall.</span><span class="lang-ar">قيّم اليوم عمومًا.</span></span></div>
+            <div class="q-body">
+              <div class="scale" role="radiogroup" id="q3scale"></div>
+              <div class="scale-ends"><span>1</span><span>5</span></div>
+            </div>
+          </div>
+
+          <!-- Q4 -->
+          <div class="q-card">
+            <div class="q-head"><span class="q-num">04</span><span class="q-label"><span class="lang-en">Your confidence using AI in your work:</span><span class="lang-ar">ثقتك في استخدام الذكاء الاصطناعي في عملك:</span></span></div>
+            <div class="q-body scale-pair">
+              <div>
+                <p class="q-sub"><span class="lang-en">Before the workshop (1–5)</span><span class="lang-ar">قبل الورشة (١ إلى ٥)</span></p>
+                <div class="scale" role="radiogroup" id="q4before"></div>
+              </div>
+              <div>
+                <p class="q-sub"><span class="lang-en">After the workshop (1–5)</span><span class="lang-ar">بعد الورشة (١ إلى ٥)</span></p>
+                <div class="scale" role="radiogroup" id="q4after"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Q5 -->
+          <div class="q-card">
+            <div class="q-head"><span class="q-num">05</span><span class="q-label"><span class="lang-en">The pace was:</span><span class="lang-ar">الإيقاع كان:</span></span></div>
+            <div class="q-body">
+              <div class="opts" role="radiogroup">
+                <label class="opt"><input type="radio" name="q5" value="Slow / بطيء" required><span class="dot"></span><span class="lang-en">Slow</span><span class="lang-ar">بطيء</span></label>
+                <label class="opt"><input type="radio" name="q5" value="Just right / مناسب"><span class="dot"></span><span class="lang-en">Just right</span><span class="lang-ar">مناسب</span></label>
+                <label class="opt"><input type="radio" name="q5" value="Fast / سريع"><span class="dot"></span><span class="lang-en">Fast</span><span class="lang-ar">سريع</span></label>
+                <label class="opt"><input type="radio" name="q5" value="Too fast in one part / سريع جدًا في جزء معيّن" data-reveal="q5detail"><span class="dot"></span><span class="lang-en">Too fast in one part</span><span class="lang-ar">سريع جدًا في جزء معيّن</span></label>
+              </div>
+              <div class="reveal-field" id="q5detail">
+                <input type="text" class="field" name="q5_detail" dir="auto" placeholder="" data-ph-en="Which part felt too fast?" data-ph-ar="أي جزء كان سريعاً جداً؟">
+              </div>
+            </div>
+          </div>
+
+          <!-- Q6 -->
+          <div class="q-card">
+            <div class="q-head"><span class="q-num">06</span><span class="q-label"><span class="lang-en">Which part was most useful to you?</span><span class="lang-ar">أي جزء كان الأنفع لك؟</span><span class="q-optional"><span class="lang-en">Select all</span><span class="lang-ar">اختر ما ينطبق</span></span></span></div>
+            <div class="q-body"><div class="opts">
+              <label class="opt check"><input type="checkbox" name="q6" value="Foundations & landscape / الأساسات والمشهد"><span class="dot"></span><span class="lang-en">Foundations &amp; landscape</span><span class="lang-ar">الأساسات والمشهد</span></label>
+              <label class="opt check"><input type="checkbox" name="q6" value="The Claude ecosystem / منظومة Claude"><span class="dot"></span><span class="lang-en">The Claude ecosystem</span><span class="lang-ar">منظومة Claude</span></label>
+              <label class="opt check"><input type="checkbox" name="q6" value="Prompting / كتابة الأوامر"><span class="dot"></span><span class="lang-en">Prompting</span><span class="lang-ar">كتابة الأوامر</span></label>
+              <label class="opt check"><input type="checkbox" name="q6" value="Building / البناء"><span class="dot"></span><span class="lang-en">Building</span><span class="lang-ar">البناء</span></label>
+              <label class="opt check"><input type="checkbox" name="q6" value="Presenting / العرض"><span class="dot"></span><span class="lang-en">Presenting</span><span class="lang-ar">العرض</span></label>
+            </div></div>
+          </div>
+
+          <!-- Q7 -->
+          <div class="q-card">
+            <div class="q-head"><span class="q-num">07</span><span class="q-label"><span class="lang-en">Which part needed more time, or was least clear?</span><span class="lang-ar">أي جزء احتاج وقتًا أكثر أو كان الأقل وضوحًا؟</span></span></div>
+            <div class="q-body"><input type="text" class="field" name="q7" dir="auto" placeholder="" data-ph-en="Type your answer…" data-ph-ar="اكتب إجابتك…"></div>
+          </div>
+
+          <!-- Q8 -->
+          <div class="q-card">
+            <div class="q-head"><span class="q-num">08</span><span class="q-label"><span class="lang-en">Which track did you choose?</span><span class="lang-ar">أي مسار اخترت؟</span></span></div>
+            <div class="q-body"><div class="opts" role="radiogroup">
+              <label class="opt"><input type="radio" name="q8" value="Content / المحتوى" required><span class="dot"></span><span class="lang-en">Content</span><span class="lang-ar">المحتوى</span></label>
+              <label class="opt"><input type="radio" name="q8" value="Work & careers / العمل والمهن"><span class="dot"></span><span class="lang-en">Work &amp; careers</span><span class="lang-ar">العمل والمهن</span></label>
+              <label class="opt"><input type="radio" name="q8" value="Entrepreneurship / ريادة الأعمال"><span class="dot"></span><span class="lang-en">Entrepreneurship</span><span class="lang-ar">ريادة الأعمال</span></label>
+            </div></div>
+          </div>
+
+          <!-- Q9 -->
+          <div class="q-card">
+            <div class="q-head"><span class="q-num">09</span><span class="q-label"><span class="lang-en">Will you use what you learned on a real task in the next week?</span><span class="lang-ar">هل ستستخدم ما تعلمته خلال الأسبوع القادم على مهمة حقيقية؟</span></span></div>
+            <div class="q-body">
+              <div class="opts stack" role="radiogroup">
+                <label class="opt"><input type="radio" name="q9" value="Yes, I know the task / نعم، أعرف المهمة" required data-reveal="q9task"><span class="dot"></span><span class="lang-en">Yes — and I know the exact task</span><span class="lang-ar">نعم، وأعرف المهمة تحديدًا</span></label>
+                <label class="opt"><input type="radio" name="q9" value="Maybe / ربما"><span class="dot"></span><span class="lang-en">Maybe</span><span class="lang-ar">ربما</span></label>
+                <label class="opt"><input type="radio" name="q9" value="No / لا"><span class="dot"></span><span class="lang-en">No</span><span class="lang-ar">لا</span></label>
+              </div>
+              <div class="reveal-field" id="q9task">
+                <input type="text" class="field" name="q9_task" dir="auto" placeholder="" data-ph-en="What's the task?" data-ph-ar="ما هي المهمة؟">
+              </div>
+            </div>
+          </div>
+
+          <!-- Q10 -->
+          <div class="q-card">
+            <div class="q-head"><span class="q-num">10</span><span class="q-label"><span class="lang-en">What do you want in Part Two?</span><span class="lang-ar">ماذا تريد في الجزء الثاني؟</span><span class="q-optional"><span class="lang-en">Select all</span><span class="lang-ar">اختر ما ينطبق</span></span></span></div>
+            <div class="q-body"><div class="opts">
+              <label class="opt check"><input type="checkbox" name="q10" value="Hands-on Cowork / Cowork عملي"><span class="dot"></span><span class="lang-en">Hands-on Cowork</span><span class="lang-ar">Cowork عملي</span></label>
+              <label class="opt check"><input type="checkbox" name="q10" value="Claude Code"><span class="dot"></span>Claude Code</label>
+              <label class="opt check"><input type="checkbox" name="q10" value="Build your own skills / بناء skills خاصة بك"><span class="dot"></span><span class="lang-en">Build your own skills</span><span class="lang-ar">بناء skills خاصة بك</span></label>
+              <label class="opt check"><input type="checkbox" name="q10" value="Full automation / أتمتة كاملة"><span class="dot"></span><span class="lang-en">Full automation</span><span class="lang-ar">أتمتة كاملة</span></label>
+              <label class="opt check"><input type="checkbox" name="q10" value="API"><span class="dot"></span>API</label>
+              <label class="opt check"><input type="checkbox" name="q10" value="Advanced track / مسار متقدم"><span class="dot"></span><span class="lang-en">Advanced track</span><span class="lang-ar">مسار متقدم</span></label>
+            </div></div>
+          </div>
+
+          <!-- Q11 -->
+          <div class="q-card">
+            <div class="q-head"><span class="q-num">11</span><span class="q-label"><span class="lang-en">Best thing about the day?</span><span class="lang-ar">أفضل شيء في اليوم؟</span></span></div>
+            <div class="q-body"><textarea class="field" name="q11" dir="auto" placeholder="" data-ph-en="Free text…" data-ph-ar="نص حر…"></textarea></div>
+          </div>
+
+          <!-- Q12 -->
+          <div class="q-card">
+            <div class="q-head"><span class="q-num">12</span><span class="q-label"><span class="lang-en">One thing you'd change?</span><span class="lang-ar">شيء واحد تغيّره؟</span></span></div>
+            <div class="q-body"><textarea class="field" name="q12" dir="auto" placeholder="" data-ph-en="Free text…" data-ph-ar="نص حر…"></textarea></div>
+          </div>
+
+          <!-- Q13 -->
+          <div class="q-card">
+            <div class="q-head"><span class="q-num">13</span><span class="q-label"><span class="lang-en">May we use your feedback as a testimonial?</span><span class="lang-ar">نسمح باستخدام رأيك كشهادة؟</span><span class="q-optional"><span class="lang-en">Optional</span><span class="lang-ar">اختياري</span></span></span></div>
+            <div class="q-body">
+              <div class="opts" role="radiogroup">
+                <label class="opt"><input type="radio" name="q13" value="Yes / نعم"><span class="dot"></span><span class="lang-en">Yes</span><span class="lang-ar">نعم</span></label>
+                <label class="opt"><input type="radio" name="q13" value="No / لا"><span class="dot"></span><span class="lang-en">No</span><span class="lang-ar">لا</span></label>
+              </div>
+              <div class="reveal-field open" style="max-height:200px;opacity:1;margin-top:0.85rem">
+                <input type="email" class="field" name="q13_email" dir="auto" placeholder="" data-ph-en="Email for contact (optional)" data-ph-ar="البريد للتواصل (اختياري)">
+              </div>
+            </div>
+          </div>
+
+          <div class="submit-row">
+            <p class="err-note" id="errNote"><span class="lang-en">Please answer the required questions (1–5, 8, 9) before submitting.</span><span class="lang-ar">يرجى الإجابة على الأسئلة المطلوبة (١–٥، ٨، ٩) قبل الإرسال.</span></p>
+            <button type="submit" class="btn-mesh btn-submit" id="submitBtn">
+              <span class="mesh mesh-1"></span>
+              <span style="color:#000"><span class="lang-en">Submit feedback</span><span class="lang-ar">إرسال الاستبيان</span></span>
+            </button>
+            <p class="form-note"><span class="lang-en">Your response is anonymous unless you leave an email above.</span><span class="lang-ar">إجابتك مجهولة ما لم تترك بريداً أعلاه.</span></p>
+          </div>
+        </form>
+
+        <!-- SUCCESS -->
+        <div class="success" id="success">
+          <div class="check"><span class="mesh mesh-1"></span><div class="bigcard-scrim"></div>
+            <svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
+          </div>
+          <h2><span class="lang-en">Thank you.</span><span class="lang-ar">شكراً لك.</span></h2>
+          <p class="text-lg"><span class="lang-en">Your feedback goes straight into building Part Two.</span><span class="lang-ar">رأيك يذهب مباشرة إلى بناء الجزء الثاني.</span></p>
+          <div style="margin-top:2rem"><a href="../../index.html" class="btn-ghost"><span class="lang-en">Back to home</span><span class="lang-ar">العودة للرئيسية</span></a></div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-logo"><span class="brand"><span class="b-flow">flow</span><span class="b-plus">+</span></span></div>
+      <p><span class="lang-en">Flow Plus for Computers and Information Systems · Abu Dhabi, UAE</span><span class="lang-ar">فلو بلس لأنظمة الحاسوب والمعلومات · أبوظبي، الإمارات</span></p>
+    </div>
+  </footer>
+
+  <script src="../../js/flow-plus.js"></script>
+  <script>
+  (function () {
+    'use strict';
+
+    /* ============================================================
+       RESPONSE STORAGE — Supabase Postgres (project: flowplus-studio).
+       Each submission is inserted as a row via the public anon key.
+       Row-Level Security allows INSERT only; reading responses is
+       done from the PIN-protected dashboard at /training/survey/admin
+       through a server-side function (the anon key cannot read rows).
+       ============================================================ */
+    var SUPABASE_URL = 'https://uiquuujrewynzbrettex.supabase.co';
+    var SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVpcXV1dWpyZXd5bnpicmV0dGV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM1MjgxNTMsImV4cCI6MjA5OTEwNDE1M30.SD4p2LoJQ3g3UnLELdqKWAQHEEtI_jjndd4aKG04DKU';
+
+    /* ---- build numeric scales ---- */
+    function buildScale(hostId, name, min, max, required) {
+      var host = document.getElementById(hostId);
+      if (!host) return;
+      for (var i = min; i <= max; i++) {
+        var wrap = document.createElement('span');
+        wrap.className = 'scale-item';
+        var id = name + '_' + i;
+        var input = document.createElement('input');
+        input.type = 'radio'; input.name = name; input.value = String(i); input.id = id;
+        if (required && i === min) input.required = true;
+        var label = document.createElement('label');
+        label.setAttribute('for', id); label.textContent = String(i);
+        wrap.appendChild(input); wrap.appendChild(label);
+        host.appendChild(wrap);
+      }
+    }
+    buildScale('q2scale', 'q2', 0, 10, true);
+    buildScale('q3scale', 'q3', 1, 5, true);
+    buildScale('q4before', 'q4_before', 1, 5, true);
+    buildScale('q4after', 'q4_after', 1, 5, true);
+
+    /* ---- localized placeholders (follow lang toggle) ---- */
+    function applyPlaceholders() {
+      var ar = document.body.classList.contains('rtl');
+      document.querySelectorAll('[data-ph-en]').forEach(function (el) {
+        el.placeholder = ar ? (el.getAttribute('data-ph-ar') || '') : (el.getAttribute('data-ph-en') || '');
+      });
+    }
+    applyPlaceholders();
+    document.querySelectorAll('.lang-btn').forEach(function (b) {
+      b.addEventListener('click', function () { setTimeout(applyPlaceholders, 0); });
+    });
+
+    /* ---- conditional reveal fields ---- */
+    document.querySelectorAll('input[data-reveal]').forEach(function (input) {
+      var groupName = input.name;
+      input.addEventListener('change', function () {
+        document.querySelectorAll('input[name="' + groupName + '"]').forEach(function (radio) {
+          var targetId = radio.getAttribute('data-reveal');
+          if (!targetId) return;
+          var target = document.getElementById(targetId);
+          if (target) target.classList.toggle('open', radio.checked);
+        });
+      });
+    });
+
+    /* ---- submit ---- */
+    var form = document.getElementById('surveyForm');
+    var errNote = document.getElementById('errNote');
+    var submitBtn = document.getElementById('submitBtn');
+
+    function buildPayload() {
+      var fd = new FormData(form);
+      function txt(n) { var v = fd.get(n); return v && String(v).trim() ? String(v).trim() : null; }
+      function int(n) { var v = fd.get(n); return v === null || v === '' ? null : parseInt(v, 10); }
+      return {
+        q1: txt('q1'),
+        q2: int('q2'),
+        q3: int('q3'),
+        q4_before: int('q4_before'),
+        q4_after: int('q4_after'),
+        q5: txt('q5'),
+        q5_detail: txt('q5_detail'),
+        q6: fd.getAll('q6'),
+        q7: txt('q7'),
+        q8: txt('q8'),
+        q9: txt('q9'),
+        q9_task: txt('q9_task'),
+        q10: fd.getAll('q10'),
+        q11: txt('q11'),
+        q12: txt('q12'),
+        q13: txt('q13'),
+        q13_email: txt('q13_email')
+      };
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      errNote.classList.remove('show');
+
+      if (!form.checkValidity()) {
+        errNote.classList.add('show');
+        var firstInvalid = form.querySelector(':invalid');
+        if (firstInvalid) {
+          var card = firstInvalid.closest('.q-card');
+          if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return;
+      }
+
+      submitBtn.disabled = true;
+      fetch(SUPABASE_URL + '/rest/v1/survey_responses', {
+        method: 'POST',
+        headers: {
+          'apikey': SUPABASE_ANON,
+          'Authorization': 'Bearer ' + SUPABASE_ANON,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify(buildPayload())
+      }).then(function (res) {
+        if (res.ok) {
+          form.style.display = 'none';
+          document.getElementById('success').classList.add('show');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          submitBtn.disabled = false;
+          errNote.textContent = 'Couldn’t submit — please try again.';
+          errNote.classList.add('show');
+        }
+      }).catch(function () {
+        submitBtn.disabled = false;
+        errNote.textContent = 'Network error — please try again.';
+        errNote.classList.add('show');
+      });
+    });
+  })();
+  </script>
+</body>
+</html>

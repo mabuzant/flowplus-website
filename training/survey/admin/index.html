@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>flow+ — Survey Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <link rel="stylesheet" href="../../../css/flow-plus.css?v=5">
+  <style>
+    body { min-height: 100vh; }
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 6.5rem clamp(1.2rem,4vw,3rem) 4rem; }
+
+    /* lock screen */
+    .lock { min-height: 82vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 1.4rem; }
+    .lock h1 { font-size: clamp(2rem,5vw,3.4rem); font-weight: 600; letter-spacing: -0.03em; }
+    .lock p { color: var(--text-3); font-size: 0.95rem; }
+    .pin-box { display: flex; gap: 0.7rem; margin-top: 0.4rem; }
+    .pin-input { width: 240px; text-align: center; letter-spacing: 0.5em; font-family: var(--font-en); font-size: 1.5rem; font-weight: 600;
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.16); border-radius: 16px; color: #fff; padding: 0.9rem 1rem; }
+    .pin-input:focus { outline: none; border-color: rgba(255,255,255,0.45); background: rgba(255,255,255,0.08); }
+    .lock-err { color: #ff8f8f; font-size: 0.9rem; min-height: 1.2em; }
+
+    /* dashboard */
+    .dash { display: none; }
+    .dash.show { display: block; }
+    .dash-head { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; }
+    .dash-head h1 { font-size: clamp(2rem,5vw,3.2rem); font-weight: 600; letter-spacing: -0.03em; }
+    .dash-head .sub { color: var(--text-3); font-size: 0.9rem; margin-top: 0.3rem; }
+    .dash-actions { display: flex; gap: 0.7rem; flex-wrap: wrap; }
+    .btn-sm { display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.7rem 1.3rem; border-radius: 100px; font-family: inherit; font-size: 0.85rem; font-weight: 600; cursor: pointer;
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.14); color: var(--text-1); transition: all 0.3s var(--ease); text-decoration: none; }
+    .btn-sm:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
+    .btn-sm.primary { background: #fff; color: #000; border-color: #fff; }
+
+    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: 1rem; margin-bottom: 1.6rem; }
+    .stat { position: relative; border-radius: var(--radius-md); overflow: hidden; padding: 1.4rem 1.5rem; background: rgba(255,255,255,0.035);
+      backdrop-filter: blur(24px); border: 1px solid rgba(255,255,255,0.08); }
+    .stat .k { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--text-3); font-weight: 600; }
+    .stat .v { font-family: var(--font-en); font-size: clamp(1.9rem,4vw,2.6rem); font-weight: 700; letter-spacing: -0.03em; margin-top: 0.35rem; line-height: 1; }
+    .stat .d { font-size: 0.78rem; color: var(--text-3); margin-top: 0.4rem; }
+    .stat .v.pos { color: #7ee0a8; } .stat .v.neg { color: #ff8f8f; }
+
+    .charts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.1rem; margin-bottom: 1.6rem; }
+    @media (max-width: 820px) { .charts { grid-template-columns: 1fr; } }
+    .chart-card { position: relative; border-radius: var(--radius-md); overflow: hidden; padding: 1.5rem 1.6rem; background: rgba(255,255,255,0.035);
+      backdrop-filter: blur(24px); border: 1px solid rgba(255,255,255,0.08); }
+    .chart-card h3 { font-size: 1rem; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 0.3rem; }
+    .chart-card .ch-sub { font-size: 0.78rem; color: var(--text-3); margin-bottom: 1.1rem; }
+    .chart-card.span2 { grid-column: 1 / -1; }
+
+    /* horizontal bars */
+    .hbar { display: grid; grid-template-columns: minmax(90px, 40%) 1fr auto; align-items: center; gap: 0.7rem; margin: 0.55rem 0; font-size: 0.88rem; }
+    .hbar .lb { color: var(--text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .hbar .track { height: 12px; border-radius: 100px; background: rgba(255,255,255,0.06); overflow: hidden; }
+    .hbar .fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, rgba(255,255,255,0.85), rgba(255,255,255,0.5)); min-width: 2px; transition: width 0.6s var(--ease); }
+    .hbar .n { font-family: var(--font-en); font-size: 0.82rem; color: var(--text-1); font-weight: 600; min-width: 2.2em; text-align: right; }
+
+    /* vertical columns */
+    .cols { display: flex; align-items: flex-end; gap: 0.5rem; height: 150px; padding-top: 0.5rem; }
+    .col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; gap: 0.4rem; }
+    .col .bar { width: 100%; max-width: 42px; border-radius: 8px 8px 0 0; background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.4)); min-height: 2px; transition: height 0.6s var(--ease); }
+    .col .cn { font-family: var(--font-en); font-size: 0.72rem; color: var(--text-2); font-weight: 600; }
+    .col .cx { font-family: var(--font-en); font-size: 0.72rem; color: var(--text-3); }
+
+    .texts { display: flex; flex-direction: column; gap: 0.55rem; max-height: 260px; overflow-y: auto; }
+    .texts .t { font-size: 0.9rem; color: var(--text-2); padding: 0.6rem 0.8rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; }
+    .texts .t:empty { display: none; }
+    .muted { color: var(--text-3); font-size: 0.88rem; }
+
+    /* table */
+    .table-scroll { overflow-x: auto; border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.02); }
+    table.resp { border-collapse: collapse; width: 100%; font-size: 0.8rem; white-space: nowrap; }
+    table.resp th, table.resp td { padding: 0.65rem 0.85rem; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    table.resp th { position: sticky; top: 0; background: #101013; color: var(--text-3); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.68rem; font-family: var(--font-en); }
+    table.resp td { color: var(--text-2); max-width: 260px; overflow: hidden; text-overflow: ellipsis; }
+    table.resp tr:hover td { background: rgba(255,255,255,0.03); color: var(--text-1); }
+    .section-tag { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.16em; color: var(--text-3); font-weight: 600; margin: 2rem 0 0.9rem; }
+  </style>
+</head>
+<body>
+  <div class="bg-vignette"></div>
+
+  <div class="wrap">
+    <!-- LOCK -->
+    <div class="lock" id="lock">
+      <a href="../index.html" class="back-link" style="position:absolute;top:1.6rem;left:1.6rem;color:var(--text-3);text-decoration:none;font-size:0.85rem">← <span class="lang-en">Survey</span></a>
+      <div class="brand" style="font-size:1.6rem;opacity:0.9"><span class="b-flow">flow</span><span class="b-plus">+</span></div>
+      <h1>Survey dashboard</h1>
+      <p>Enter your PIN to view responses.</p>
+      <div class="pin-box">
+        <input class="pin-input" id="pin" type="password" inputmode="numeric" autocomplete="off" maxlength="10" placeholder="••••••" />
+      </div>
+      <div class="lock-err" id="lockErr"></div>
+      <button class="btn-mesh" id="unlockBtn" style="min-width:180px;justify-content:center"><span class="mesh mesh-1"></span><span style="color:#000">Unlock</span></button>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div class="dash" id="dash">
+      <div class="dash-head">
+        <div>
+          <h1>Responses</h1>
+          <div class="sub" id="dashSub">—</div>
+        </div>
+        <div class="dash-actions">
+          <button class="btn-sm" id="refreshBtn">↻ Refresh</button>
+          <button class="btn-sm primary" id="csvBtn">↓ Export CSV</button>
+          <button class="btn-sm" id="lockBtn">Lock</button>
+        </div>
+      </div>
+
+      <div id="empty" class="muted" style="display:none;padding:3rem 0;text-align:center">No responses yet. They'll appear here as people submit the survey.</div>
+
+      <div id="content">
+        <div class="stat-grid" id="statGrid"></div>
+        <div class="charts" id="charts"></div>
+
+        <div class="section-tag">Written answers</div>
+        <div class="charts" id="textCharts"></div>
+
+        <div class="section-tag">All responses</div>
+        <div class="table-scroll"><table class="resp" id="respTable"></table></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../../js/flow-plus.js"></script>
+  <script>
+  (function () {
+    'use strict';
+
+    var SUPABASE_URL = 'https://uiquuujrewynzbrettex.supabase.co';
+    var SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVpcXV1dWpyZXd5bnpicmV0dGV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM1MjgxNTMsImV4cCI6MjA5OTEwNDE1M30.SD4p2LoJQ3g3UnLELdqKWAQHEEtI_jjndd4aKG04DKU';
+    var FN_URL = SUPABASE_URL + '/functions/v1/survey-admin';
+
+    var responses = [];
+    var currentPin = '';
+
+    var lock = document.getElementById('lock');
+    var dash = document.getElementById('dash');
+    var pinInput = document.getElementById('pin');
+    var lockErr = document.getElementById('lockErr');
+    var unlockBtn = document.getElementById('unlockBtn');
+
+    function fetchResponses(pin) {
+      return fetch(FN_URL, {
+        method: 'POST',
+        headers: { 'apikey': SUPABASE_ANON, 'Authorization': 'Bearer ' + SUPABASE_ANON, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pin: pin })
+      }).then(function (r) { return r.json().then(function (j) { return { ok: r.ok, status: r.status, j: j }; }); });
+    }
+
+    function unlock() {
+      var pin = pinInput.value.trim();
+      if (!pin) return;
+      lockErr.textContent = '';
+      unlockBtn.style.opacity = '0.6';
+      fetchResponses(pin).then(function (res) {
+        unlockBtn.style.opacity = '1';
+        if (!res.ok) {
+          lockErr.textContent = res.status === 401 ? 'Wrong PIN.' : ('Error: ' + (res.j.error || res.status));
+          return;
+        }
+        currentPin = pin;
+        responses = res.j.responses || [];
+        lock.style.display = 'none';
+        dash.classList.add('show');
+        render();
+      }).catch(function (e) {
+        unlockBtn.style.opacity = '1';
+        lockErr.textContent = 'Network error — try again.';
+      });
+    }
+    unlockBtn.addEventListener('click', unlock);
+    pinInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') unlock(); });
+
+    document.getElementById('refreshBtn').addEventListener('click', function () {
+      fetchResponses(currentPin).then(function (res) { if (res.ok) { responses = res.j.responses || []; render(); } });
+    });
+    document.getElementById('lockBtn').addEventListener('click', function () {
+      dash.classList.remove('show'); lock.style.display = 'flex'; pinInput.value = ''; currentPin = ''; responses = [];
+    });
+    document.getElementById('csvBtn').addEventListener('click', exportCsv);
+
+    /* ---------- aggregation helpers ---------- */
+    function nums(field) { return responses.map(function (r) { return r[field]; }).filter(function (v) { return typeof v === 'number'; }); }
+    function avg(arr) { return arr.length ? arr.reduce(function (a, b) { return a + b; }, 0) / arr.length : 0; }
+    function countBy(field) {
+      var m = {};
+      responses.forEach(function (r) { var v = r[field]; if (v == null || v === '') return; m[v] = (m[v] || 0) + 1; });
+      return m;
+    }
+    function countMulti(field) {
+      var m = {};
+      responses.forEach(function (r) {
+        var v = r[field]; if (!Array.isArray(v)) return;
+        v.forEach(function (x) { if (x == null || x === '') return; m[x] = (m[x] || 0) + 1; });
+      });
+      return m;
+    }
+    function toItems(mapObj) {
+      return Object.keys(mapObj).map(function (k) { return { label: k, value: mapObj[k] }; })
+        .sort(function (a, b) { return b.value - a.value; });
+    }
+    function shortLabel(s) { // strip "/ arabic" duplication for chart labels, keep English side
+      return String(s).split(' / ')[0];
+    }
+
+    /* ---------- renderers ---------- */
+    function hbars(items, opts) {
+      opts = opts || {};
+      var max = Math.max.apply(null, items.map(function (i) { return i.value; }).concat([1]));
+      var html = items.map(function (i) {
+        var pct = Math.round((i.value / max) * 100);
+        return '<div class="hbar"><span class="lb" title="' + esc(i.label) + '">' + esc(opts.shorten ? shortLabel(i.label) : i.label) +
+          '</span><span class="track"><span class="fill" style="width:' + pct + '%"></span></span><span class="n">' + i.value + '</span></div>';
+      }).join('');
+      return html || '<div class="muted">No data.</div>';
+    }
+    function vcols(items) {
+      var max = Math.max.apply(null, items.map(function (i) { return i.value; }).concat([1]));
+      return '<div class="cols">' + items.map(function (i) {
+        var h = Math.round((i.value / max) * 100);
+        return '<div class="col"><span class="cn">' + i.value + '</span><span class="bar" style="height:' + h + '%"></span><span class="cx">' + esc(i.label) + '</span></div>';
+      }).join('') + '</div>';
+    }
+    function card(title, sub, inner, span2) {
+      return '<div class="chart-card' + (span2 ? ' span2' : '') + '"><h3>' + title + '</h3>' +
+        (sub ? '<div class="ch-sub">' + sub + '</div>' : '') + inner + '</div>';
+    }
+
+    function render() {
+      var n = responses.length;
+      document.getElementById('dashSub').textContent = n + ' response' + (n === 1 ? '' : 's') +
+        (n ? ' · latest ' + new Date(responses[n - 1].created_at).toLocaleString() : '');
+
+      document.getElementById('empty').style.display = n ? 'none' : 'block';
+      document.getElementById('content').style.display = n ? 'block' : 'none';
+      if (!n) return;
+
+      /* stats */
+      var recAvg = avg(nums('q2'));
+      var q2vals = nums('q2');
+      var promoters = q2vals.filter(function (v) { return v >= 9; }).length;
+      var detractors = q2vals.filter(function (v) { return v <= 6; }).length;
+      var nps = q2vals.length ? Math.round(((promoters - detractors) / q2vals.length) * 100) : 0;
+      var dayAvg = avg(nums('q3'));
+      var before = avg(nums('q4_before')), after = avg(nums('q4_after'));
+      var lift = after - before;
+      var built = responses.filter(function (r) { return r.q1 && r.q1.indexOf('No') !== 0; }).length;
+      var builtPct = Math.round((built / n) * 100);
+
+      var stats = [
+        { k: 'Responses', v: String(n), d: '' },
+        { k: 'Avg recommend', v: recAvg.toFixed(1), d: 'out of 10' },
+        { k: 'NPS', v: (nps > 0 ? '+' : '') + nps, d: 'promoters − detractors', cls: nps >= 0 ? 'pos' : 'neg' },
+        { k: 'Avg day rating', v: dayAvg.toFixed(1), d: 'out of 5' },
+        { k: 'Confidence lift', v: (lift >= 0 ? '+' : '') + lift.toFixed(1), d: before.toFixed(1) + ' → ' + after.toFixed(1), cls: lift >= 0 ? 'pos' : 'neg' },
+        { k: 'Left with a build', v: builtPct + '%', d: built + ' of ' + n }
+      ];
+      document.getElementById('statGrid').innerHTML = stats.map(function (s) {
+        return '<div class="stat"><div class="k">' + s.k + '</div><div class="v ' + (s.cls || '') + '">' + s.v + '</div>' + (s.d ? '<div class="d">' + s.d + '</div>' : '') + '</div>';
+      }).join('');
+
+      /* charts */
+      function scaleItems(field, min, max) {
+        var m = countBy(field), items = [];
+        for (var i = min; i <= max; i++) items.push({ label: String(i), value: m[i] || 0 });
+        return items;
+      }
+      var charts = '';
+      charts += card('Recommend to a friend', '0–10 · Q2', vcols(scaleItems('q2', 0, 10)));
+      charts += card('Day rating', '1–5 · Q3', vcols(scaleItems('q3', 1, 5)));
+      charts += card('Confidence in AI', 'avg before vs after · Q4',
+        hbars([{ label: 'Before', value: +before.toFixed(1) }, { label: 'After', value: +after.toFixed(1) }]));
+      charts += card('Pace', 'Q5', hbars(toItems(countBy('q5')), { shorten: true }));
+      charts += card('Track chosen', 'Q8', hbars(toItems(countBy('q8')), { shorten: true }));
+      charts += card('Will use next week', 'Q9', hbars(toItems(countBy('q9')), { shorten: true }));
+      charts += card('Most useful part', 'multi-select · Q6', hbars(toItems(countMulti('q6')), { shorten: true }), true);
+      charts += card('Wants in Part Two', 'multi-select · Q10', hbars(toItems(countMulti('q10')), { shorten: true }), true);
+      document.getElementById('charts').innerHTML = charts;
+
+      /* text answers */
+      function textList(field) {
+        var items = responses.map(function (r) { return r[field]; }).filter(function (v) { return v && String(v).trim(); });
+        if (!items.length) return '<div class="muted">No answers.</div>';
+        return '<div class="texts">' + items.map(function (t) { return '<div class="t">' + esc(t) + '</div>'; }).join('') + '</div>';
+      }
+      document.getElementById('textCharts').innerHTML =
+        card('Best thing about the day', 'Q11', textList('q11')) +
+        card('One thing to change', 'Q12', textList('q12')) +
+        card('Needed more time / unclear', 'Q7', textList('q7')) +
+        card('The real task they’ll try', 'Q9', textList('q9_task'));
+
+      /* table */
+      var cols = [
+        ['created_at', 'Time'], ['q1', 'Built'], ['q2', 'Rec'], ['q3', 'Day'], ['q4_before', 'Conf←'], ['q4_after', 'Conf→'],
+        ['q5', 'Pace'], ['q5_detail', 'Too fast'], ['q6', 'Useful'], ['q7', 'Unclear'], ['q8', 'Track'],
+        ['q9', 'Use'], ['q9_task', 'Task'], ['q10', 'Part 2'], ['q11', 'Best'], ['q12', 'Change'], ['q13', 'Testimonial'], ['q13_email', 'Email']
+      ];
+      var thead = '<thead><tr>' + cols.map(function (c) { return '<th>' + c[1] + '</th>'; }).join('') + '</tr></thead>';
+      var tbody = '<tbody>' + responses.slice().reverse().map(function (r) {
+        return '<tr>' + cols.map(function (c) {
+          var v = r[c[0]];
+          if (c[0] === 'created_at') v = new Date(v).toLocaleString();
+          else if (Array.isArray(v)) v = v.map(shortLabel).join(', ');
+          else if (typeof v === 'string') v = shortLabel(v);
+          return '<td title="' + esc(v == null ? '' : v) + '">' + esc(v == null || v === '' ? '—' : v) + '</td>';
+        }).join('') + '</tr>';
+      }).join('') + '</tbody>';
+      document.getElementById('respTable').innerHTML = thead + tbody;
+    }
+
+    /* ---------- CSV ---------- */
+    function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+    function csvCell(v) {
+      if (Array.isArray(v)) v = v.join('; ');
+      if (v == null) v = '';
+      v = String(v);
+      if (/[",\n]/.test(v)) v = '"' + v.replace(/"/g, '""') + '"';
+      return v;
+    }
+    function exportCsv() {
+      if (!responses.length) return;
+      var cols = ['created_at', 'q1', 'q2', 'q3', 'q4_before', 'q4_after', 'q5', 'q5_detail', 'q6', 'q7', 'q8', 'q9', 'q9_task', 'q10', 'q11', 'q12', 'q13', 'q13_email'];
+      var rows = [cols.join(',')];
+      responses.forEach(function (r) { rows.push(cols.map(function (c) { return csvCell(r[c]); }).join(',')); });
+      var blob = new Blob(['﻿' + rows.join('\n')], { type: 'text/csv;charset=utf-8;' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'flowplus-survey-' + new Date().toISOString().slice(0, 10) + '.csv';
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    }
+
+    pinInput.focus();
+  })();
+  </script>
+</body>
+</html>
