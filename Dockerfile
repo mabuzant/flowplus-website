@@ -4,6 +4,7 @@ COPY index.html founder.html brand-guidelines.html image-slot.js /usr/share/ngin
 COPY assets /usr/share/nginx/html/assets
 COPY css /usr/share/nginx/html/css
 COPY js /usr/share/nginx/html/js
+COPY training /usr/share/nginx/html/training
 
 RUN printf 'server {\n\
   listen       $PORT;\n\
