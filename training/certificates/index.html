@@ -68,20 +68,31 @@
       background: #FFFFFF; color: #0A0A0A; font-family: var(--font-en);
       box-sizing: border-box; display: flex; flex-direction: column;
     }
-    .certificate .c-edge { position: absolute; inset: 28px; border: 1px solid #E5E5E7; pointer-events: none; }
+    /* colourful accents on white — soft mesh-palette glows + gradient letterhead */
+    .certificate .c-topbar { position: absolute; top: 0; left: 0; right: 0; height: 8px; z-index: 4;
+      background: linear-gradient(90deg, #58A6FF 0%, #0C10E3 34%, #FF6B6B 68%, #E3ED2A 100%); }
+    .certificate .c-glow { position: absolute; border-radius: 50%; z-index: 0; pointer-events: none; }
+    .certificate .c-glow.g1 { top: -170px; left: -130px; width: 540px; height: 540px;
+      background: radial-gradient(circle, rgba(88,166,255,0.30), transparent 62%); }
+    .certificate .c-glow.g2 { bottom: -190px; right: -120px; width: 560px; height: 560px;
+      background: radial-gradient(circle, rgba(255,107,107,0.24), transparent 62%); }
+    .certificate .c-glow.g3 { bottom: -150px; left: -110px; width: 420px; height: 420px;
+      background: radial-gradient(circle, rgba(227,237,42,0.20), transparent 60%); }
+    .certificate .c-edge { position: absolute; inset: 28px; z-index: 1; border: 1px solid #E5E5E7; pointer-events: none; }
     .certificate .c-inner { position: relative; z-index: 2; flex: 1; display: flex; flex-direction: column; padding: 64px 92px 52px; }
 
     /* header: wordmark + document type + hairline */
     .certificate .c-head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 20px; border-bottom: 1px solid #E5E5E7; }
     .certificate .c-brand { font-family: var(--font-en); font-size: 30px; color: #0A0A0A; letter-spacing: -0.02em; }
     .certificate .c-brand .b-flow { font-weight: 300; }
-    .certificate .c-brand .b-plus { font-weight: 700; }
-    .certificate .c-doctype { font-size: 12px; text-transform: uppercase; letter-spacing: 0.2em; color: #9A9A9C; }
+    .certificate .c-brand .b-plus { font-weight: 700; color: #0C10E3; }
+    .certificate .c-doctype { font-size: 12px; text-transform: uppercase; letter-spacing: 0.2em; color: #0C10E3; font-weight: 600; }
 
     /* centre block */
     .certificate .c-mid { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
     .certificate .c-kicker { font-size: 14px; color: #3A3A3C; letter-spacing: 0.02em; }
-    .certificate .c-rule { width: 54px; height: 3px; background: #0C10E3; margin: 15px 0 22px; } /* single accent (mesh-2 stop) */
+    .certificate .c-rule { width: 68px; height: 3px; border-radius: 2px; margin: 15px 0 22px;
+      background: linear-gradient(90deg, #58A6FF, #0C10E3, #FF6B6B); } /* gradient accent */
     .certificate .c-name { font-size: 58px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.04; color: #0A0A0A; }
     .certificate .c-name-ar { margin-top: 4px; font-family: var(--font-ar); font-size: 34px; font-weight: 700; color: #0A0A0A; direction: rtl; line-height: 1.5; }
     .certificate .c-body { margin-top: 22px; font-size: 15px; color: #3A3A3C; }
@@ -229,6 +240,8 @@
       var el = document.createElement('div');
       el.className = 'certificate';
       el.innerHTML =
+        '<span class="c-topbar"></span>' +
+        '<span class="c-glow g1"></span><span class="c-glow g2"></span><span class="c-glow g3"></span>' +
         '<span class="c-edge"></span>' +
         '<div class="c-inner">' +
           '<div class="c-head">' +
