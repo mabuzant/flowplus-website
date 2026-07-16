@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>flow+ — Workshop Admin</title>
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../../css/flow-plus.css?v=8">
+  <style>
+    .wrap { min-height: 100vh; padding: 6rem 1.25rem 4rem; position: relative; }
+    .bg-a { position: fixed; inset: 0; z-index: -1; overflow: hidden; }
+    .bg-a .mesh { position: absolute; opacity: 0.4; }
+    .bg-a .m-a { top: -25%; left: -12%; width: 60vw; height: 60vw; }
+    .bg-a .m-b { bottom: -25%; right: -12%; width: 55vw; height: 55vw; }
+
+    .shell { width: 100%; max-width: 960px; margin: 0 auto; }
+    .lock { max-width: 460px; margin: 4rem auto 0; }
+    .pad { padding: clamp(1.7rem, 4vw, 2.6rem); }
+
+    h1.title { font-size: clamp(2rem, 5vw, 3rem); font-weight: 600; letter-spacing: -0.03em; }
+    .kicker { font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.24em; color: var(--text-3); font-weight: 600; margin-bottom: 0.9rem; }
+    .lede { color: var(--text-2); margin-top: 0.6rem; }
+
+    .field { margin-top: 1.2rem; }
+    .field label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--text-2); margin-bottom: 0.5rem; }
+    .inp { width: 100%; padding: 0.9rem 1.05rem; border-radius: 14px; background: rgba(255,255,255,0.045);
+      border: 1px solid var(--glass-border); color: var(--text-1); font-family: inherit; font-size: 1rem; outline: none; transition: border-color .3s, background .3s; }
+    .inp::placeholder { color: var(--text-3); }
+    .inp:focus { border-color: rgba(255,255,255,0.32); background: rgba(255,255,255,0.07); }
+    .inp[dir="rtl"] { text-align: right; }
+    .inp.pin { text-align: center; letter-spacing: 0.5em; font-size: 1.5rem; font-weight: 600; padding-left: 1.5em; }
+
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; cursor: pointer;
+      border: none; border-radius: 100px; padding: 0.85rem 1.6rem; font-family: inherit; font-size: 0.95rem; font-weight: 600;
+      color: #fff; position: relative; overflow: hidden; isolation: isolate; transition: transform .3s var(--ease); }
+    .btn .mesh { position: absolute; inset: -80%; filter: blur(26px) saturate(150%); }
+    .btn span { position: relative; z-index: 2; }
+    .btn::after { content: ''; position: absolute; inset: 0; z-index: 1; background: rgba(0,0,0,0.18); }
+    .btn:hover { transform: translateY(-2px); }
+    .btn[disabled] { opacity: 0.5; pointer-events: none; }
+    .btn-sm { padding: 0.5rem 0.95rem; font-size: 0.82rem; border-radius: 10px; background: rgba(255,255,255,0.06);
+      border: 1px solid var(--glass-border); color: var(--text-1); cursor: pointer; font-family: inherit; font-weight: 500; }
+    .btn-sm:hover { background: rgba(255,255,255,0.12); }
+    .btn-sm.danger:hover { background: rgba(255,90,90,0.22); border-color: rgba(255,90,90,0.4); }
+
+    .msg { margin-top: 0.9rem; font-size: 0.88rem; min-height: 1.2em; color: #ff8b8b; }
+    .msg.ok { color: #7be0a8; }
+
+    .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.8rem; gap: 1rem; flex-wrap: wrap; }
+    .stat-row { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-top: 0.4rem; }
+    .stat { background: rgba(255,255,255,0.045); border: 1px solid var(--glass-border); border-radius: 14px; padding: 0.7rem 1.1rem; }
+    .stat b { font-size: 1.4rem; font-weight: 700; } .stat span { display: block; font-size: 0.72rem; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.12em; }
+
+    .ws { border: 1px solid var(--glass-border); border-radius: 18px; padding: 1.1rem 1.25rem; margin-top: 1rem; background: rgba(255,255,255,0.025); }
+    .ws-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .ws-name { font-size: 1.15rem; font-weight: 600; letter-spacing: -0.01em; }
+    .ws-name-ar { font-family: var(--font-ar); color: var(--text-2); margin-top: 2px; }
+    .ws-meta { display: flex; gap: 1.4rem; flex-wrap: wrap; align-items: center; margin-top: 0.7rem; }
+    .code-chip { font-family: var(--font-en); font-size: 1.25rem; font-weight: 700; letter-spacing: 0.12em;
+      background: rgba(88,166,255,0.14); border: 1px solid rgba(88,166,255,0.34); color: #cfe3ff; padding: 0.3rem 0.8rem; border-radius: 10px; cursor: pointer; }
+    .code-chip:hover { background: rgba(88,166,255,0.24); }
+    .meta-item { font-size: 0.85rem; color: var(--text-2); } .meta-item b { color: var(--text-1); }
+    .ws-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+    .names { margin-top: 0.9rem; border-top: 1px solid var(--glass-border); padding-top: 0.8rem; display: none; }
+    .names.open { display: block; }
+    .names table { width: 100%; border-collapse: collapse; }
+    .names td, .names th { text-align: left; padding: 0.4rem 0.5rem; font-size: 0.85rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .names th { color: var(--text-3); font-weight: 500; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; }
+    .names td.ar { font-family: var(--font-ar); color: var(--text-2); }
+    .empty { color: var(--text-3); font-size: 0.85rem; padding: 0.4rem 0.5rem; }
+
+    .edit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+    @media (max-width: 640px) { .edit-grid { grid-template-columns: 1fr; } }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <div class="bg-a">
+    <span class="mesh mesh-2 m-a"></span>
+    <span class="mesh mesh-4 m-b"></span>
+  </div>
+
+  <nav class="nav" style="font-weight:500">
+    <div class="nav-inner">
+      <a href="../../../index.html" class="nav-logo"><span class="brand"><span class="b-flow">flow</span><span class="b-plus">+</span></span></a>
+      <div class="nav-links"><span class="section-label" style="margin:0">Workshop Admin</span></div>
+    </div>
+  </nav>
+
+  <main class="wrap">
+    <!-- PIN gate -->
+    <div class="shell lock" id="lock">
+      <div class="glass pad">
+        <div class="kicker">Admin</div>
+        <h1 class="title">Enter PIN</h1>
+        <p class="lede">This dashboard manages workshops, access codes and certificate counts.</p>
+        <div class="field">
+          <input class="inp pin" id="pinInput" inputmode="numeric" maxlength="6" autocomplete="off" placeholder="••••••">
+        </div>
+        <button class="btn" id="pinBtn" style="margin-top:1.2rem;width:100%"><span class="mesh mesh-2"></span><span>Unlock</span></button>
+        <div class="msg" id="pinMsg"></div>
+      </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="shell hidden" id="dash">
+      <div class="topbar">
+        <div>
+          <div class="kicker" style="margin-bottom:0.4rem">Workshops</div>
+          <h1 class="title">Dashboard</h1>
+          <div class="stat-row">
+            <div class="stat"><b id="statWs">0</b><span>Workshops</span></div>
+            <div class="stat"><b id="statCerts">0</b><span>Certificates</span></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:0.5rem;align-items:center">
+          <button class="btn-sm" id="refreshBtn">Refresh</button>
+          <button class="btn-sm" id="lockBtn">Lock</button>
+        </div>
+      </div>
+
+      <!-- Add workshop -->
+      <div class="glass pad" style="margin-bottom:1.6rem">
+        <div class="kicker">New workshop</div>
+        <div class="edit-grid">
+          <div class="field" style="margin-top:0.6rem">
+            <label>Workshop name (English)</label>
+            <input class="inp" id="newEn" placeholder="e.g. Artificial Intelligence, the Language of the Future">
+          </div>
+          <div class="field" style="margin-top:0.6rem">
+            <label>Workshop name (Arabic)</label>
+            <input class="inp" id="newAr" dir="rtl" placeholder="اسم الورشة بالعربية">
+          </div>
+          <div class="field" style="margin-top:0.6rem">
+            <label>Date</label>
+            <input class="inp" id="newDate" type="date">
+          </div>
+          <div class="field" style="margin-top:0.6rem;display:flex;align-items:flex-end">
+            <button class="btn" id="addBtn" style="width:100%"><span class="mesh mesh-1"></span><span>Create workshop &amp; generate code</span></button>
+          </div>
+        </div>
+        <div class="msg" id="addMsg"></div>
+      </div>
+
+      <div id="wsList"></div>
+    </div>
+  </main>
+
+  <script src="../../../js/flow-plus.js"></script>
+  <script>
+  (function () {
+    'use strict';
+    var $ = function (id) { return document.getElementById(id); };
+    var PIN = '';
+
+    function esc(s) {
+      return String(s == null ? '' : s).replace(/[&<>"']/g, function (m) {
+        return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[m];
+      });
+    }
+    function fmtDate(iso) {
+      if (!iso) return '—';
+      var d = new Date(iso + 'T00:00:00');
+      if (isNaN(d.getTime())) return iso;
+      return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    }
+    function fmtTs(ts) {
+      var d = new Date(ts);
+      return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' }) + ' ' +
+             d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+    }
+    function api(path, opts) {
+      opts = opts || {};
+      opts.headers = Object.assign({ 'x-admin-pin': PIN, 'Content-Type': 'application/json' }, opts.headers || {});
+      return fetch('/api/admin/' + path, opts).then(function (r) {
+        if (r.status === 401) throw new Error('unauthorized');
+        return r.ok ? r.json() : r.json().then(function (j) { throw new Error(j.error || 'error'); });
+      });
+    }
+
+    /* -------- PIN gate -------- */
+    function unlock() {
+      var pin = ($('pinInput').value || '').trim();
+      var msg = $('pinMsg');
+      if (!pin) { msg.className = 'msg'; msg.textContent = 'Enter your PIN.'; return; }
+      PIN = pin;
+      $('pinBtn').setAttribute('disabled', 'true');
+      api('verify', { method: 'POST', body: '{}' })
+        .then(function () {
+          try { sessionStorage.setItem('flowplus_admin_pin', PIN); } catch (e) {}
+          $('lock').classList.add('hidden');
+          $('dash').classList.remove('hidden');
+          load();
+        })
+        .catch(function () { msg.className = 'msg'; msg.textContent = 'Wrong PIN.'; PIN = ''; })
+        .then(function () { $('pinBtn').removeAttribute('disabled'); });
+    }
+    $('pinBtn').addEventListener('click', unlock);
+    $('pinInput').addEventListener('keydown', function (e) { if (e.key === 'Enter') unlock(); });
+
+    $('lockBtn').addEventListener('click', function () {
+      PIN = ''; try { sessionStorage.removeItem('flowplus_admin_pin'); } catch (e) {}
+      $('dash').classList.add('hidden'); $('lock').classList.remove('hidden'); $('pinInput').value = '';
+    });
+
+    /* -------- load + render -------- */
+    function load() {
+      api('summary').then(render).catch(function (e) {
+        if (String(e.message) === 'unauthorized') { $('lockBtn').click(); }
+      });
+    }
+    $('refreshBtn').addEventListener('click', load);
+
+    function render(data) {
+      var ws = data.workshops || [];
+      var totalCerts = ws.reduce(function (n, w) { return n + w.count; }, 0);
+      $('statWs').textContent = ws.length;
+      $('statCerts').textContent = totalCerts;
+
+      var list = $('wsList');
+      list.innerHTML = '';
+      if (!ws.length) { list.innerHTML = '<div class="glass pad" style="text-align:center;color:var(--text-3)">No workshops yet. Create one above.</div>'; return; }
+
+      ws.forEach(function (w) {
+        var el = document.createElement('div');
+        el.className = 'ws';
+        var rows = w.registrations.length
+          ? '<table><thead><tr><th>#</th><th>Name (EN)</th><th>Name (AR)</th><th>When</th></tr></thead><tbody>' +
+            w.registrations.map(function (r, i) {
+              return '<tr><td>' + (i + 1) + '</td><td>' + esc(r.nameEn) + '</td><td class="ar">' + esc(r.nameAr || '') + '</td><td>' + fmtTs(r.ts) + '</td></tr>';
+            }).join('') + '</tbody></table>'
+          : '<div class="empty">No certificates generated yet.</div>';
+
+        el.innerHTML =
+          '<div class="ws-top">' +
+            '<div>' +
+              '<div class="ws-name">' + esc(w.nameEn) + '</div>' +
+              (w.nameAr ? '<div class="ws-name-ar">' + esc(w.nameAr) + '</div>' : '') +
+              '<div class="ws-meta">' +
+                '<span class="code-chip" data-copy="' + esc(w.code) + '" title="Click to copy">' + esc(w.code) + '</span>' +
+                '<span class="meta-item">Date · <b>' + esc(fmtDate(w.date)) + '</b></span>' +
+                '<span class="meta-item">Certificates · <b>' + w.count + '</b></span>' +
+              '</div>' +
+            '</div>' +
+            '<div class="ws-actions">' +
+              '<button class="btn-sm" data-toggle>' + (w.count ? 'View names (' + w.count + ')' : 'View names') + '</button>' +
+              '<button class="btn-sm" data-edit>Edit</button>' +
+              '<button class="btn-sm danger" data-del>Delete</button>' +
+            '</div>' +
+          '</div>' +
+          '<div class="names">' + rows + '</div>' +
+          '<div class="names hidden" data-editform>' +
+            '<div class="edit-grid" style="margin-top:0.4rem">' +
+              '<div class="field" style="margin-top:0"><label>Name (English)</label><input class="inp" data-e-en value="' + esc(w.nameEn) + '"></div>' +
+              '<div class="field" style="margin-top:0"><label>Name (Arabic)</label><input class="inp" dir="rtl" data-e-ar value="' + esc(w.nameAr || '') + '"></div>' +
+              '<div class="field" style="margin-top:0"><label>Date</label><input class="inp" type="date" data-e-date value="' + esc(w.date || '') + '"></div>' +
+              '<div class="field" style="margin-top:0;display:flex;align-items:flex-end;gap:0.5rem">' +
+                '<button class="btn-sm" data-save>Save</button><button class="btn-sm" data-cancel>Cancel</button>' +
+              '</div>' +
+            '</div>' +
+          '</div>';
+
+        // copy code
+        el.querySelector('.code-chip').addEventListener('click', function () {
+          var code = this.getAttribute('data-copy');
+          if (navigator.clipboard) navigator.clipboard.writeText(code);
+          var old = this.textContent; this.textContent = 'copied'; var chip = this;
+          setTimeout(function () { chip.textContent = old; }, 900);
+        });
+        // toggle names
+        el.querySelector('[data-toggle]').addEventListener('click', function () {
+          el.querySelector('.names:not([data-editform])').classList.toggle('open');
+        });
+        // edit
+        el.querySelector('[data-edit]').addEventListener('click', function () {
+          el.querySelector('[data-editform]').classList.toggle('hidden');
+          el.querySelector('[data-editform]').classList.add('open');
+        });
+        el.querySelector('[data-cancel]').addEventListener('click', function () {
+          el.querySelector('[data-editform]').classList.add('hidden');
+        });
+        el.querySelector('[data-save]').addEventListener('click', function () {
+          var body = {
+            nameEn: el.querySelector('[data-e-en]').value,
+            nameAr: el.querySelector('[data-e-ar]').value,
+            date: el.querySelector('[data-e-date]').value
+          };
+          api('workshop/' + w.id, { method: 'PUT', body: JSON.stringify(body) }).then(load).catch(function () {});
+        });
+        // delete
+        el.querySelector('[data-del]').addEventListener('click', function () {
+          if (!confirm('Delete "' + w.nameEn + '" and its ' + w.count + ' certificate record(s)? This cannot be undone.')) return;
+          api('workshop/' + w.id, { method: 'DELETE' }).then(load).catch(function () {});
+        });
+
+        list.appendChild(el);
+      });
+    }
+
+    /* -------- add workshop -------- */
+    $('addBtn').addEventListener('click', function () {
+      var body = { nameEn: $('newEn').value.trim(), nameAr: $('newAr').value.trim(), date: $('newDate').value };
+      var msg = $('addMsg');
+      if (body.nameEn.length < 2) { msg.className = 'msg'; msg.textContent = 'Enter the workshop name in English.'; return; }
+      $('addBtn').setAttribute('disabled', 'true');
+      api('workshop', { method: 'POST', body: JSON.stringify(body) })
+        .then(function (data) {
+          msg.className = 'msg ok';
+          msg.textContent = 'Created. Access code: ' + data.workshop.code;
+          $('newEn').value = ''; $('newAr').value = ''; $('newDate').value = '';
+          load();
+        })
+        .catch(function () { msg.className = 'msg'; msg.textContent = 'Could not create workshop.'; })
+        .then(function () { $('addBtn').removeAttribute('disabled'); });
+    });
+
+    /* -------- resume session -------- */
+    try {
+      var saved = sessionStorage.getItem('flowplus_admin_pin');
+      if (saved) { PIN = saved; api('verify', { method: 'POST', body: '{}' })
+        .then(function () { $('lock').classList.add('hidden'); $('dash').classList.remove('hidden'); load(); })
+        .catch(function () { PIN = ''; }); }
+    } catch (e) {}
+
+  })();
+  </script>
+</body>
+</html>

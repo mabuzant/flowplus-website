@@ -24,6 +24,9 @@
 .DS_Store
 *.pem
 
+# local data store (workshops + registrations live on a Railway volume in prod)
+/data
+
 # debug
 npm-debug.log*
 yarn-debug.log*

@@ -1,0 +1,15 @@
+{
+  "name": "flowplus-website",
+  "version": "1.0.0",
+  "private": true,
+  "description": "flow+ brand website with workshop certificate generator and admin dashboard",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

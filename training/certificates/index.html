@@ -68,16 +68,14 @@
       background: #FFFFFF; color: #0A0A0A; font-family: var(--font-en);
       box-sizing: border-box; display: flex; flex-direction: column;
     }
-    /* colourful accents on white — soft mesh-palette glows + gradient letterhead */
+    /* accents on white — two tones from the flow+ azure/electric palette */
     .certificate .c-topbar { position: absolute; top: 0; left: 0; right: 0; height: 8px; z-index: 4;
-      background: linear-gradient(90deg, #58A6FF 0%, #0C10E3 34%, #FF6B6B 68%, #E3ED2A 100%); }
+      background: linear-gradient(90deg, #58A6FF 0%, #0C10E3 100%); }
     .certificate .c-glow { position: absolute; border-radius: 50%; z-index: 0; pointer-events: none; }
     .certificate .c-glow.g1 { top: -170px; left: -130px; width: 540px; height: 540px;
-      background: radial-gradient(circle, rgba(88,166,255,0.30), transparent 62%); }
+      background: radial-gradient(circle, rgba(88,166,255,0.26), transparent 62%); }
     .certificate .c-glow.g2 { bottom: -190px; right: -120px; width: 560px; height: 560px;
-      background: radial-gradient(circle, rgba(255,107,107,0.24), transparent 62%); }
-    .certificate .c-glow.g3 { bottom: -150px; left: -110px; width: 420px; height: 420px;
-      background: radial-gradient(circle, rgba(227,237,42,0.20), transparent 60%); }
+      background: radial-gradient(circle, rgba(12,16,227,0.16), transparent 62%); }
     .certificate .c-edge { position: absolute; inset: 28px; z-index: 1; border: 1px solid #E5E5E7; pointer-events: none; }
     .certificate .c-inner { position: relative; z-index: 2; flex: 1; display: flex; flex-direction: column; padding: 64px 92px 52px; }
 
@@ -92,7 +90,7 @@
     .certificate .c-mid { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
     .certificate .c-kicker { font-size: 14px; color: #3A3A3C; letter-spacing: 0.02em; }
     .certificate .c-rule { width: 68px; height: 3px; border-radius: 2px; margin: 15px 0 22px;
-      background: linear-gradient(90deg, #58A6FF, #0C10E3, #FF6B6B); } /* gradient accent */
+      background: linear-gradient(90deg, #58A6FF, #0C10E3); } /* two-tone accent */
     .certificate .c-name { font-size: 58px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.04; color: #0A0A0A; }
     .certificate .c-name-ar { margin-top: 4px; font-family: var(--font-ar); font-size: 34px; font-weight: 700; color: #0A0A0A; direction: rtl; line-height: 1.5; }
     .certificate .c-body { margin-top: 22px; font-size: 15px; color: #3A3A3C; }
@@ -203,27 +201,16 @@
   (function () {
     'use strict';
 
-    /* ============================================================
-       CERT_CONFIG — EDIT THESE VALUES for the workshop details.
-       Everything printed on the certificate (except the person's
-       name) comes from here. Arabic + English versions supported.
-    ============================================================ */
-    var ACCESS_CODE = '256008';
+    /* ------------------------------------------------------------
+       Workshop details (name + date) now come from the server, keyed
+       by the access code. Manage them in the admin dashboard at
+       /training/certificates/admin. The facilitator is fixed below.
+    ------------------------------------------------------------ */
+    var FACILITATOR = { name: 'Mohammad Abu Zant / flow+', title: 'Workshop Facilitator' };
 
-    var CERT_CONFIG = {
-      workshopEn:  'AI Native Creativity Workshop',
-      workshopAr:  'ورشة الإبداع بالذكاء الاصطناعي',
-      dateEn:      'July 2026',
-      dateAr:      'يوليو 2026',
-      // Signature / issuer block
-      issuerNameEn: 'flow+',
-      issuerNameAr: 'flow+',
-      issuerTitleEn: 'Workshop Facilitator',
-      issuerTitleAr: 'ميسّر الورشة'
-    };
-    /* ========================================================== */
-
-    var STORE_KEY = 'flowplus_cert_claim_v1';
+    var currentWorkshop = null;                    // { id, nameEn, nameAr, date }
+    var currentCode = '';
+    function storeKey(code) { return 'flowplus_cert_claim_' + code; }
 
     var $ = function (id) { return document.getElementById(id); };
     function show(stepId) {
@@ -234,14 +221,22 @@
     }
     function t(en, ar) { return document.body.classList.contains('rtl') ? ar : en; }
 
+    function fmtDate(iso) {
+      if (!iso) return '';
+      var d = new Date(iso + 'T00:00:00');
+      if (isNaN(d.getTime())) return iso;
+      try { return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }); }
+      catch (e) { return iso; }
+    }
+
     /* -------- build the certificate DOM from a claim -------- */
     function buildCertificate(claim) {
-      var c = CERT_CONFIG;
+      var w = claim.workshop || {};
       var el = document.createElement('div');
       el.className = 'certificate';
       el.innerHTML =
         '<span class="c-topbar"></span>' +
-        '<span class="c-glow g1"></span><span class="c-glow g2"></span><span class="c-glow g3"></span>' +
+        '<span class="c-glow g1"></span><span class="c-glow g2"></span>' +
         '<span class="c-edge"></span>' +
         '<div class="c-inner">' +
           '<div class="c-head">' +
@@ -254,19 +249,19 @@
             '<div class="c-name">' + esc(claim.nameEn) + '</div>' +
             (claim.nameAr ? '<div class="c-name-ar">' + esc(claim.nameAr) + '</div>' : '') +
             '<div class="c-body">for successfully completing the workshop</div>' +
-            '<div class="c-workshop">' + esc(c.workshopEn) + '</div>' +
-            '<div class="c-workshop-ar">' + esc(c.workshopAr) + '</div>' +
+            '<div class="c-workshop">' + esc(w.nameEn) + '</div>' +
+            (w.nameAr ? '<div class="c-workshop-ar">' + esc(w.nameAr) + '</div>' : '') +
           '</div>' +
           '<div class="c-foot">' +
             '<div class="col">' +
-              '<div class="val">' + esc(c.dateEn) + '</div>' +
+              '<div class="val">' + esc(fmtDate(w.date)) + '</div>' +
               '<div class="sig-rule"></div>' +
               '<div class="lbl">Date</div>' +
             '</div>' +
             '<div class="col">' +
-              '<div class="val val-ar">' + esc(c.issuerNameEn) + '</div>' +
+              '<div class="val">' + esc(FACILITATOR.name) + '</div>' +
               '<div class="sig-rule"></div>' +
-              '<div class="lbl">' + esc(c.issuerTitleEn) + '</div>' +
+              '<div class="lbl">' + esc(FACILITATOR.title) + '</div>' +
             '</div>' +
           '</div>' +
           '<div class="c-footer">' +
@@ -283,7 +278,7 @@
     }
     function makeId(claim) {
       // short deterministic-ish id from name + code
-      var base = (claim.nameEn + '|' + ACCESS_CODE).toUpperCase();
+      var base = (claim.nameEn + '|' + claim.code).toUpperCase();
       var h = 0;
       for (var i = 0; i < base.length; i++) { h = (h * 31 + base.charCodeAt(i)) >>> 0; }
       return 'FP' + ('000000' + h.toString(36).toUpperCase()).slice(-6);
@@ -354,32 +349,45 @@
     }
 
     /* -------- flow -------- */
+    var existing = null;                           // this browser's claim for currentCode
     function goToDone(claim) {
       renderCertificate(claim);
       show('step-done');
     }
+    function savedClaim(code) {
+      try { return JSON.parse(localStorage.getItem(storeKey(code)) || 'null'); } catch (e) { return null; }
+    }
 
-    // Already claimed on this browser? jump straight to download.
-    var existing = null;
-    try { existing = JSON.parse(localStorage.getItem(STORE_KEY) || 'null'); } catch (e) {}
-
-    // STEP 1 — code
-    $('codeBtn').addEventListener('click', function () {
+    // STEP 1 — code (validated against the server)
+    var codeBtn = $('codeBtn');
+    codeBtn.addEventListener('click', function () {
       var val = ($('codeInput').value || '').trim();
       var msg = $('codeMsg');
-      if (val === ACCESS_CODE) {
-        msg.textContent = '';
-        if (existing) { goToDone(existing); }   // this browser already submitted a name
-        else { show('step-name'); setTimeout(function () { $('nameEn').focus(); }, 60); }
-      } else {
-        msg.className = 'msg';
-        msg.textContent = t('That code isn’t valid. Please check and try again.', '.الرمز غير صحيح. يرجى التحقق والمحاولة مرة أخرى');
-      }
-    });
-    $('codeInput').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('codeBtn').click(); });
+      if (!val) { msg.className = 'msg'; msg.textContent = t('Enter your access code.', '.أدخل رمز الدخول'); return; }
+      msg.className = 'msg'; msg.textContent = t('Checking…', '…جاري التحقق');
+      codeBtn.setAttribute('disabled', 'true');
 
-    // STEP 2 — name (one submission per browser)
-    $('nameBtn').addEventListener('click', function () {
+      fetch('/api/workshops/' + encodeURIComponent(val))
+        .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+        .then(function (data) {
+          currentWorkshop = data.workshop;
+          currentCode = val;
+          msg.textContent = '';
+          existing = savedClaim(val);
+          if (existing) { goToDone(existing); }            // already generated on this browser
+          else { show('step-name'); setTimeout(function () { $('nameEn').focus(); }, 60); }
+        })
+        .catch(function () {
+          msg.className = 'msg';
+          msg.textContent = t('That code isn’t valid. Please check and try again.', '.الرمز غير صحيح. يرجى التحقق والمحاولة مرة أخرى');
+        })
+        .then(function () { codeBtn.removeAttribute('disabled'); });
+    });
+    $('codeInput').addEventListener('keydown', function (e) { if (e.key === 'Enter') codeBtn.click(); });
+
+    // STEP 2 — name (records the generation server-side; one per browser)
+    var nameBtn = $('nameBtn');
+    nameBtn.addEventListener('click', function () {
       var nameEn = ($('nameEn').value || '').trim();
       var nameAr = ($('nameAr').value || '').trim();
       var msg = $('nameMsg');
@@ -389,13 +397,33 @@
         return;
       }
       if (existing) { goToDone(existing); return; }
-      var claim = { nameEn: nameEn, nameAr: nameAr, ts: Date.now() };
-      claim.id = makeId(claim);
-      try { localStorage.setItem(STORE_KEY, JSON.stringify(claim)); } catch (e) {}
-      existing = claim;
-      goToDone(claim);
+      msg.className = 'msg'; msg.textContent = t('Generating…', '…جاري الإنشاء');
+      nameBtn.setAttribute('disabled', 'true');
+
+      fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: currentCode, nameEn: nameEn, nameAr: nameAr })
+      })
+        .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+        .then(function () {
+          var claim = {
+            code: currentCode, nameEn: nameEn, nameAr: nameAr,
+            workshop: currentWorkshop, ts: Date.now()
+          };
+          claim.id = makeId(claim);
+          try { localStorage.setItem(storeKey(currentCode), JSON.stringify(claim)); } catch (e) {}
+          existing = claim;
+          msg.textContent = '';
+          goToDone(claim);
+        })
+        .catch(function () {
+          msg.className = 'msg';
+          msg.textContent = t('Something went wrong. Please try again.', '.حدث خطأ ما. حاول مرة أخرى');
+        })
+        .then(function () { nameBtn.removeAttribute('disabled'); });
     });
-    $('nameAr').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('nameBtn').click(); });
+    $('nameAr').addEventListener('keydown', function (e) { if (e.key === 'Enter') nameBtn.click(); });
 
     // STEP 3 — download
     $('downloadBtn').addEventListener('click', function () {
