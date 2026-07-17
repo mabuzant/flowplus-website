@@ -67,6 +67,7 @@
       width: 1123px; height: 794px; position: relative; overflow: hidden;
       background: #FFFFFF; color: #0A0A0A; font-family: var(--font-en);
       box-sizing: border-box; display: flex; flex-direction: column;
+      direction: ltr; /* certificate layout is always LTR, even in Arabic mode */
     }
     /* accents on white — two tones from the flow+ azure/electric palette */
     .certificate .c-topbar { position: absolute; top: 0; left: 0; right: 0; height: 8px; z-index: 4;
@@ -81,7 +82,8 @@
 
     /* header: wordmark + document type + hairline */
     .certificate .c-head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 20px; border-bottom: 1px solid #E5E5E7; }
-    .certificate .c-brand { font-family: var(--font-en); font-size: 30px; color: #0A0A0A; letter-spacing: -0.02em; }
+    .certificate .c-brand { font-family: var(--font-en); font-size: 30px; color: #0A0A0A; letter-spacing: -0.02em;
+      direction: ltr; unicode-bidi: isolate; } /* lock flow+ so it never flips to +flow in RTL */
     .certificate .c-brand .b-flow { font-weight: 300; }
     .certificate .c-brand .b-plus { font-weight: 700; color: #0C10E3; }
     .certificate .c-doctype { font-size: 12px; text-transform: uppercase; letter-spacing: 0.2em; color: #0C10E3; font-weight: 600; }
