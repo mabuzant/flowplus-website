@@ -14,4 +14,4 @@ Allow: /
 User-agent: Applebot-Extended
 Allow: /
 
-Sitemap: https://flowplus.ae/sitemap.xml
+Sitemap: https://www.flowplus.ae/sitemap.xml

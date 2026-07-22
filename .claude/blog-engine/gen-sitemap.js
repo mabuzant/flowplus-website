@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const ROOT = path.resolve(__dirname, '..', '..');
 const posts = JSON.parse(fs.readFileSync(path.join(ROOT, 'blog', 'posts.json'), 'utf8'));
-const base = 'https://flowplus.ae';
+const base = 'https://www.flowplus.ae';
 const urls = [
   `  <url><loc>${base}/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>`,
   `  <url><loc>${base}/founder</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>`,
