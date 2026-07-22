@@ -621,6 +621,19 @@ body.rtl .stack-card.flick { transform: translateX(-125%) rotate(-14deg) !import
 }
 .client-item[dir="rtl"] { font-family: var(--font-ar); }
 .client-dot { color: var(--text-3); font-size: 0.9rem; flex-shrink: 0; }
+
+/* Treatment B — full-colour logos on white chips */
+.client-strip-chips .client-track { gap: clamp(1.2rem, 3vw, 2.2rem); }
+.client-chip {
+  display: inline-flex; align-items: center; justify-content: center;
+  background: #ffffff; border-radius: 18px; flex-shrink: 0;
+  height: 72px; padding: 0 26px; box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+.client-chip .client-logo { height: 44px; width: auto; max-width: 220px; display: block; object-fit: contain; }
+.client-chip-fallback { display: none; align-items: center; color: #0b0b0d; font-weight: 600; font-size: 1.05rem; letter-spacing: -0.01em; }
+.client-chip-fallback.ar { font-family: var(--font-ar); }
+@media (max-width: 640px) { .client-chip { height: 60px; padding: 0 18px; } .client-chip .client-logo { height: 34px; } }
+
 @keyframes clientScroll {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
