@@ -622,17 +622,21 @@ body.rtl .stack-card.flick { transform: translateX(-125%) rotate(-14deg) !import
 .client-item[dir="rtl"] { font-family: var(--font-ar); }
 .client-dot { color: var(--text-3); font-size: 0.9rem; flex-shrink: 0; }
 
-/* Treatment B — full-colour logos on white chips */
-.client-strip-chips .client-track { gap: clamp(1.2rem, 3vw, 2.2rem); }
+/* Treatment A — monochrome white logos directly on the dark strip (no chips) */
+.client-strip-mono .client-track { gap: clamp(2.4rem, 6vw, 5rem); }
 .client-chip {
   display: inline-flex; align-items: center; justify-content: center;
-  background: #ffffff; border-radius: 18px; flex-shrink: 0;
-  height: 72px; padding: 0 26px; box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  flex-shrink: 0; height: 48px;
 }
-.client-chip .client-logo { height: 44px; width: auto; max-width: 220px; display: block; object-fit: contain; }
-.client-chip-fallback { display: none; align-items: center; color: #0b0b0d; font-weight: 600; font-size: 1.05rem; letter-spacing: -0.01em; }
+.client-chip .client-logo {
+  height: 100%; width: auto; max-width: 240px; display: block; object-fit: contain;
+  filter: brightness(0) invert(1); opacity: 0.66;
+  transition: opacity 0.3s var(--ease);
+}
+.client-strip-mono:hover .client-logo { opacity: 0.9; }
+.client-chip-fallback { display: none; align-items: center; color: #fff; opacity: 0.7; font-weight: 600; font-size: 1.05rem; letter-spacing: -0.01em; }
 .client-chip-fallback.ar { font-family: var(--font-ar); }
-@media (max-width: 640px) { .client-chip { height: 60px; padding: 0 18px; } .client-chip .client-logo { height: 34px; } }
+@media (max-width: 640px) { .client-chip { height: 38px; } }
 
 @keyframes clientScroll {
   from { transform: translateX(0); }
