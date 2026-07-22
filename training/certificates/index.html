@@ -636,9 +636,13 @@
           if (existing) { goToDone(existing); }            // already generated on this browser
           else { show('step-name'); setTimeout(function () { $('nameEn').focus(); }, 60); }
         })
-        .catch(function () {
+        .catch(function (status) {
           msg.className = 'msg';
-          msg.textContent = t('That code isn’t valid. Please check and try again.', '.الرمز غير صحيح. يرجى التحقق والمحاولة مرة أخرى');
+          if (status === 403) {
+            msg.textContent = t('Certificate issuing for this workshop has closed.', '.انتهت فترة إصدار شهادات هذه الورشة');
+          } else {
+            msg.textContent = t('That code isn’t valid. Please check and try again.', '.الرمز غير صحيح. يرجى التحقق والمحاولة مرة أخرى');
+          }
         })
         .then(function () { codeBtn.removeAttribute('disabled'); });
     });
@@ -676,9 +680,13 @@
           msg.textContent = '';
           goToDone(claim);
         })
-        .catch(function () {
+        .catch(function (status) {
           msg.className = 'msg';
-          msg.textContent = t('Something went wrong. Please try again.', '.حدث خطأ ما. حاول مرة أخرى');
+          if (status === 403) {
+            msg.textContent = t('Certificate issuing for this workshop has closed.', '.انتهت فترة إصدار شهادات هذه الورشة');
+          } else {
+            msg.textContent = t('Something went wrong. Please try again.', '.حدث خطأ ما. حاول مرة أخرى');
+          }
         })
         .then(function () { nameBtn.removeAttribute('disabled'); });
     });

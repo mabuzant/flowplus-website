@@ -41,6 +41,7 @@ function seedStore() {
         nameEn: 'Artificial Intelligence, the Language of the Future',
         nameAr: 'الذكاء الاصطناعي، لغة المستقبل',
         date: '2026-07-16',
+        closed: false,
         createdAt: Date.now()
       }
     ],
@@ -150,6 +151,7 @@ app.use((req, res, next) => {
 app.get('/api/workshops/:code', (req, res) => {
   const w = findByCode(req.params.code);
   if (!w) return res.status(404).json({ ok: false, error: 'invalid_code' });
+  if (w.closed) return res.status(403).json({ ok: false, error: 'closed' });
   res.json({ ok: true, workshop: publicWorkshop(w) });
 });
 
@@ -157,6 +159,7 @@ app.get('/api/workshops/:code', (req, res) => {
 app.post('/api/register', (req, res) => {
   const w = findByCode(req.body && req.body.code);
   if (!w) return res.status(404).json({ ok: false, error: 'invalid_code' });
+  if (w.closed) return res.status(403).json({ ok: false, error: 'closed' });
 
   const nameEn = clean(req.body.nameEn, 120);
   const nameAr = clean(req.body.nameAr, 120);
@@ -196,6 +199,7 @@ app.get('/api/admin/summary', requireAdmin, (req, res) => {
         .sort((a, b) => b.ts - a.ts);
       return {
         id: w.id, code: w.code, nameEn: w.nameEn, nameAr: w.nameAr, date: w.date,
+        closed: !!w.closed,
         count: regs.length,
         registrations: regs.map(r => ({ nameEn: r.nameEn, nameAr: r.nameAr, ts: r.ts }))
       };
@@ -209,7 +213,7 @@ app.post('/api/admin/workshop', requireAdmin, (req, res) => {
   const nameAr = clean(req.body.nameAr, 160);
   const date = clean(req.body.date, 40);
   if (nameEn.length < 2) return res.status(400).json({ ok: false, error: 'nameEn_required' });
-  const w = { id: genId('ws'), code: genCode(), nameEn, nameAr, date, createdAt: Date.now() };
+  const w = { id: genId('ws'), code: genCode(), nameEn, nameAr, date, closed: false, createdAt: Date.now() };
   store.workshops.push(w);
   saveStore();
   res.json({ ok: true, workshop: w });
@@ -222,6 +226,7 @@ app.put('/api/admin/workshop/:id', requireAdmin, (req, res) => {
   if (req.body.nameEn != null) w.nameEn = clean(req.body.nameEn, 160);
   if (req.body.nameAr != null) w.nameAr = clean(req.body.nameAr, 160);
   if (req.body.date != null) w.date = clean(req.body.date, 40);
+  if (req.body.closed != null) w.closed = !!req.body.closed;
   if (w.nameEn.length < 2) return res.status(400).json({ ok: false, error: 'nameEn_required' });
   saveStore();
   res.json({ ok: true, workshop: w });

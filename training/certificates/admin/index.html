@@ -46,6 +46,15 @@
       border: 1px solid var(--glass-border); color: var(--text-1); cursor: pointer; font-family: inherit; font-weight: 500; }
     .btn-sm:hover { background: rgba(255,255,255,0.12); }
     .btn-sm.danger:hover { background: rgba(255,90,90,0.22); border-color: rgba(255,90,90,0.4); }
+    .btn-sm.stop:hover { background: rgba(255,170,60,0.2); border-color: rgba(255,170,60,0.45); color: #ffd59e; }
+    .btn-sm.resume { color: #7be0a8; border-color: rgba(120,224,168,0.35); }
+    .btn-sm.resume:hover { background: rgba(120,224,168,0.16); border-color: rgba(120,224,168,0.5); }
+
+    .status-chip { font-size: 0.74rem; font-weight: 600; letter-spacing: 0.02em; padding: 0.22rem 0.6rem; border-radius: 100px; }
+    .status-chip.open { color: #7be0a8; background: rgba(120,224,168,0.1); border: 1px solid rgba(120,224,168,0.28); }
+    .status-chip.closed { color: #ffb37a; background: rgba(255,170,80,0.1); border: 1px solid rgba(255,170,80,0.3); }
+    .ws-closed { opacity: 0.72; }
+    .ws-closed .code-chip { background: rgba(255,255,255,0.06); border-color: var(--glass-border); color: var(--text-3); }
 
     .msg { margin-top: 0.9rem; font-size: 0.88rem; min-height: 1.2em; color: #ff8b8b; }
     .msg.ok { color: #7be0a8; }
@@ -228,7 +237,7 @@
 
       ws.forEach(function (w) {
         var el = document.createElement('div');
-        el.className = 'ws';
+        el.className = 'ws' + (w.closed ? ' ws-closed' : '');
         var rows = w.registrations.length
           ? '<table><thead><tr><th>#</th><th>Name (EN)</th><th>Name (AR)</th><th>When</th></tr></thead><tbody>' +
             w.registrations.map(function (r, i) {
@@ -245,10 +254,12 @@
                 '<span class="code-chip" data-copy="' + esc(w.code) + '" title="Click to copy">' + esc(w.code) + '</span>' +
                 '<span class="meta-item">Date · <b>' + esc(fmtDate(w.date)) + '</b></span>' +
                 '<span class="meta-item">Certificates · <b>' + w.count + '</b></span>' +
+                '<span class="status-chip ' + (w.closed ? 'closed' : 'open') + '">' + (w.closed ? '● Issuing closed' : '● Issuing open') + '</span>' +
               '</div>' +
             '</div>' +
             '<div class="ws-actions">' +
               '<button class="btn-sm" data-toggle>' + (w.count ? 'View names (' + w.count + ')' : 'View names') + '</button>' +
+              '<button class="btn-sm ' + (w.closed ? 'resume' : 'stop') + '" data-issue>' + (w.closed ? 'Resume issuing' : 'Stop issuing') + '</button>' +
               '<button class="btn-sm" data-edit>Edit</button>' +
               '<button class="btn-sm danger" data-del>Delete</button>' +
             '</div>' +
@@ -291,6 +302,16 @@
             date: el.querySelector('[data-e-date]').value
           };
           api('workshop/' + w.id, { method: 'PUT', body: JSON.stringify(body) }).then(load).catch(function () {});
+        });
+        // stop / resume issuing certificates
+        el.querySelector('[data-issue]').addEventListener('click', function () {
+          var btn = this;
+          var closing = !w.closed;
+          if (closing && !confirm('Stop issuing certificates for "' + w.nameEn + '"?\n\nThe access code will no longer generate new certificates. Existing certificates are unaffected. You can resume anytime.')) return;
+          btn.setAttribute('disabled', 'true');
+          api('workshop/' + w.id, { method: 'PUT', body: JSON.stringify({ closed: closing }) })
+            .then(load)
+            .catch(function () { btn.removeAttribute('disabled'); });
         });
         // delete
         el.querySelector('[data-del]').addEventListener('click', function () {
