@@ -633,7 +633,7 @@ body.rtl .stack-card.flick { transform: translateX(-125%) rotate(-14deg) !import
 .testi-grid { align-items: stretch; }
 .testi-card {
   position: relative; isolation: isolate; overflow: hidden;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   border: 1px solid rgba(255,255,255,0.09);
   background: rgba(255,255,255,0.03);
   padding: 0; min-height: 100%;
