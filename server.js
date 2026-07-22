@@ -243,6 +243,23 @@ app.delete('/api/admin/workshop/:id', requireAdmin, (req, res) => {
 });
 
 /* ===== static site ===== */
+app.get('/robots.txt', (req, res) => {
+  res.type('text/plain').sendFile(path.join(ROOT, 'robots.txt'));
+});
+app.get('/sitemap.xml', (req, res) => {
+  res.type('application/xml').sendFile(path.join(ROOT, 'sitemap.xml'));
+});
+
+app.get('/blog', (req, res) => res.sendFile(path.join(ROOT, 'blog', 'index.html')));
+app.get('/blog/:slug', (req, res, next) => {
+  // Let real static files under /blog/ (posts.json, assets) fall through to the
+  // static handler; this route only renders extensionless post slugs.
+  if (req.params.slug.includes('.')) return next();
+  const slug = req.params.slug.replace(/[^a-z0-9-]/gi, '');
+  const file = path.join(ROOT, 'blog', 'posts', slug + '.html');
+  res.sendFile(file, err => { if (err) res.status(404).sendFile(path.join(ROOT, 'blog', 'index.html')); });
+});
+
 app.use(express.static(ROOT, { extensions: ['html'] }));
 
 // SPA-ish fallback for unknown non-API GETs → home page.

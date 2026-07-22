@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>flow+ Blog — AI, Creative Technology & Workshops</title>
+  <meta name="description" content="Insights on AI, creative technology, and hands-on AI workshops from flow+ — for teams across the UAE, MENA, and beyond.">
+  <link rel="canonical" href="https://flowplus.ae/blog">
+  <meta name="robots" content="index, follow">
+  <meta property="og:type" content="website"><meta property="og:title" content="flow+ Blog">
+  <meta property="og:url" content="https://flowplus.ae/blog"><meta property="og:image" content="https://flowplus.ae/assets/flowplus-og.png">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/flow-plus.css?v=8">
+</head>
+<body>
+  <nav class="nav"><div class="nav-inner"><a href="/" class="nav-logo"><span class="brand"><span class="b-flow">flow</span><span class="b-plus">+</span></span></a></div></nav>
+  <main class="container" style="max-width:900px;margin:0 auto;padding:6rem 1.5rem">
+    <h1>flow+ Blog</h1>
+    <p style="opacity:.7">AI, creative technology, and workshop insights.</p>
+    <div id="post-list"></div>
+  </main>
+  <script>
+    fetch('/blog/posts.json').then(r=>r.json()).then(posts=>{
+      const el=document.getElementById('post-list');
+      if(!posts.length){el.innerHTML='<p style="opacity:.5">Posts coming soon.</p>';return;}
+      el.innerHTML=posts.sort((a,b)=>b.date.localeCompare(a.date)).map(p=>
+        `<a href="/blog/${p.slug}" style="display:block;padding:1.5rem 0;border-bottom:1px solid rgba(255,255,255,.1);text-decoration:none;color:inherit">
+          <h2 style="margin:0 0 .3rem">${p.title}</h2>
+          <p style="opacity:.6;margin:0">${p.excerpt}</p>
+          <small style="opacity:.4">${p.date}</small></a>`).join('');
+    }).catch(()=>{document.getElementById('post-list').innerHTML='<p style="opacity:.5">Posts coming soon.</p>';});
+  </script>
+</body>
+</html>
