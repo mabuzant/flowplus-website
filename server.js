@@ -101,8 +101,8 @@ app.use(express.json({ limit: '64kb' }));
  * Once it does, we force HTTPS and fold the apex into the canonical www host so
  * there is a single, certificate-backed origin.
  */
-const CANONICAL_HOST = 'www.flowplus.ae';
-const APEX_HOST = 'flowplus.ae';
+const CANONICAL_HOST = 'flowplus.ae';
+const ALT_HOST = 'www.flowplus.ae';
 
 app.use((req, res, next) => {
   // Security headers on every response.
@@ -128,7 +128,7 @@ app.use((req, res, next) => {
 
   const host = (req.headers.host || '').toLowerCase().split(':')[0];
   const proto = req.headers['x-forwarded-proto'];
-  const isProdHost = host === APEX_HOST || host === CANONICAL_HOST;
+  const isProdHost = host === ALT_HOST || host === CANONICAL_HOST;
 
   // Only touch real production hostnames — never localhost or *.railway.app,
   // so the Railway healthcheck and local dev are left alone.
@@ -137,8 +137,8 @@ app.use((req, res, next) => {
     if (proto === 'http') {
       return res.redirect(308, 'https://' + CANONICAL_HOST + req.originalUrl);
     }
-    // Fold apex → www so there is one canonical, cert-backed origin.
-    if (host === APEX_HOST) {
+    // Fold www → apex so there is one canonical, cert-backed origin.
+    if (host === ALT_HOST) {
       return res.redirect(308, 'https://' + CANONICAL_HOST + req.originalUrl);
     }
   }
