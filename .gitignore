@@ -45,3 +45,6 @@ next-env.d.ts
 
 # blog engine run logs
 .claude/blog-engine/logs/*.log
+
+# Superpowers SDD scratch (local only)
+.superpowers/
