@@ -187,6 +187,13 @@ app.delete('/api/admin/workshop/:id', requireAdmin, (req, res) => {
 });
 
 /* ===== static site ===== */
+app.get('/robots.txt', (req, res) => {
+  res.type('text/plain').sendFile(path.join(ROOT, 'robots.txt'));
+});
+app.get('/sitemap.xml', (req, res) => {
+  res.type('application/xml').sendFile(path.join(ROOT, 'sitemap.xml'));
+});
+
 app.use(express.static(ROOT, { extensions: ['html'] }));
 
 // SPA-ish fallback for unknown non-API GETs → home page.
