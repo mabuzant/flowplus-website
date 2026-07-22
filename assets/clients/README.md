@@ -1,7 +1,19 @@
 # Client logos (homepage "Clients & Partners" strip — Treatment A)
 
-Drop the **official** logo files here using these exact names. The homepage
-(`index.html`, `#clients`) references them at these paths:
+The strip is **data-driven**. Source of truth is `clients.json`; the homepage
+markup is generated between the `CLIENTS:START/END` markers in `index.html`.
+
+## Add a logo (the fast path)
+1. `python3 scripts/process_logo.py <raw_file> <slug>` → writes
+   `assets/clients/<slug>.png` (trimmed, padded, transparent).
+2. Add an entry to `clients.json` (order = display order).
+3. `python3 scripts/build_clients.py` → regenerates the strip.
+4. Commit and deploy.
+
+This is packaged as the **`add-client-logo`** skill (`.claude/skills/`) — just
+drop a logo and ask to add it; the skill runs all of the above and ships it live.
+
+Current entries (see `clients.json`):
 
 | File | Client |
 |------|--------|

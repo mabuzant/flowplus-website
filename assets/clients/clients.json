@@ -1,0 +1,23 @@
+[
+  {
+    "slug": "aurak",
+    "file": "aurak.png",
+    "alt": "American University of Ras Al Khaimah",
+    "fallback": "American University of RAK",
+    "ar": false
+  },
+  {
+    "slug": "federal-youth-authority",
+    "file": "federal-youth-authority.png",
+    "alt": "Federal Youth Authority",
+    "fallback": "Federal Youth Authority",
+    "ar": false
+  },
+  {
+    "slug": "youth-councils",
+    "file": "youth-councils.png",
+    "alt": "مجالس الشباب — UAE Youth Councils",
+    "fallback": "مجالس الشباب",
+    "ar": true
+  }
+]
