@@ -8,8 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="preload" as="image" href="assets/workshop-ai.webp" type="image/webp" fetchpriority="high">
-  <link rel="stylesheet" href="css/flow-plus.css?v=8">
+  <link rel="stylesheet" href="css/flow-plus.css?v=9">
   <style>
     .section-alt { background: var(--bg-deep); }
     .hero-float-photo { position: absolute; border-radius: var(--radius-md); overflow: hidden; z-index: 1; border: 1px solid rgba(255,255,255,0.08); }
@@ -59,24 +58,6 @@
   </div>
 
   <main>
-    <!-- ===== WORKSHOP CARD (TEMPORARY — pinned to top) ===== -->
-    <section id="workshop" class="section workshop-section" dir="rtl">
-      <div class="container">
-        <div class="workshop-wrap" data-zoom>
-          <a href="https://forms.gle/uEz9FjVU8hKttETf6" class="workshop-card js-external-form" aria-label="ورشة الذكاء الاصطناعي — لغة المستقبل">
-            <picture>
-              <source srcset="assets/workshop-ai.webp" type="image/webp">
-              <img src="assets/workshop-ai.jpg" alt="ورشة تدريبية حضورية — الذكاء الاصطناعي، لغة المستقبل" width="1080" height="1350" fetchpriority="high" decoding="async">
-            </picture>
-          </a>
-          <a href="https://forms.gle/uEz9FjVU8hKttETf6" class="btn-mesh workshop-cta js-external-form">
-            <span class="mesh mesh-1"></span>
-            <span style="color:#000000">سجّل في الورشة الآن</span>
-          </a>
-        </div>
-      </div>
-    </section>
-
     <!-- ===== HERO ===== -->
     <section id="hero" class="hero">
       <div class="hero-fluid">
@@ -153,6 +134,35 @@
           <div class="tool-chip"><span class="tool-logo"><svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.3" stroke-linejoin="round"><ellipse cx="12" cy="12" rx="2.9" ry="8.2"/><ellipse cx="12" cy="12" rx="2.9" ry="8.2" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="2.9" ry="8.2" transform="rotate(120 12 12)"/></svg></span>ChatGPT Codex</div>
           <div class="tool-chip"><span class="tool-logo"><svg viewBox="0 0 24 24"><defs><linearGradient id="gemg" x1="2" y1="3" x2="22" y2="21" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#4796E3"/><stop offset="0.5" stop-color="#7C72D6"/><stop offset="1" stop-color="#BC6FB0"/></linearGradient></defs><path d="M12 1.5c.45 5.7 4.3 9.55 10 10-5.7.45-9.55 4.3-10 10-.45-5.7-4.3-9.55-10-10 5.7-.45 9.55-4.3 10-10z" fill="url(#gemg)"/></svg></span>Gemini</div>
           <div class="tool-chip"><span class="tool-logo"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="4.2" fill="#8AB4F8"/><ellipse cx="12" cy="12" rx="10" ry="4" stroke="#8AB4F8" stroke-width="1.4" transform="rotate(-25 12 12)"/></svg></span>Antigravity</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CLIENTS ===== -->
+    <section id="clients" class="section section-alt">
+      <div class="container">
+        <div class="section-label" data-anim style="text-align:center"><span class="lang-en">Clients &amp; Partners</span><span class="lang-ar">عملاء وشركاء</span></div>
+        <h2 data-anim data-delay="1" style="text-align:center;margin-bottom:3rem;max-width:20ch;margin-left:auto;margin-right:auto">
+          <span class="lang-en">Trusted by leading institutions.</span>
+          <span class="lang-ar">موضع ثقة مؤسسات رائدة.</span>
+        </h2>
+      </div>
+      <div class="client-strip" data-anim data-delay="2" aria-label="Clients">
+        <div class="client-track">
+          <!-- set A -->
+          <span class="client-item">American University of RAK</span>
+          <span class="client-dot" aria-hidden="true">✦</span>
+          <span class="client-item">Federal Youth Authority</span>
+          <span class="client-dot" aria-hidden="true">✦</span>
+          <span class="client-item" dir="rtl">مجالس الشباب</span>
+          <span class="client-dot" aria-hidden="true">✦</span>
+          <!-- set B (duplicate for seamless loop) -->
+          <span class="client-item" aria-hidden="true">American University of RAK</span>
+          <span class="client-dot" aria-hidden="true">✦</span>
+          <span class="client-item" aria-hidden="true">Federal Youth Authority</span>
+          <span class="client-dot" aria-hidden="true">✦</span>
+          <span class="client-item" dir="rtl" aria-hidden="true">مجالس الشباب</span>
+          <span class="client-dot" aria-hidden="true">✦</span>
         </div>
       </div>
     </section>
@@ -307,6 +317,105 @@
       </div>
     </section>
 
+    <!-- ===== TESTIMONIALS ===== -->
+    <section id="testimonials" class="section section-alt">
+      <div class="container">
+        <div class="section-label" data-anim><span class="lang-en">What attendees say</span><span class="lang-ar">ماذا قال الحاضرون</span></div>
+        <h2 data-anim data-delay="1" style="margin-bottom:3.5rem;max-width:18ch">
+          <span class="lang-en">Real feedback from the room.</span>
+          <span class="lang-ar">آراء حقيقية من قلب الورشة.</span>
+        </h2>
+
+        <div class="grid grid-3 testi-grid">
+          <!-- 1 -->
+          <figure class="testi-card" data-zoom data-tilt>
+            <span class="mesh mesh-1" data-speed="0.015"></span>
+            <span class="grain"></span>
+            <div class="bigcard-scrim"></div>
+            <blockquote class="testi-body">
+              <span class="testi-quote" aria-hidden="true">“</span>
+              <p>
+                <span class="lang-en">Literally everything — and every single second was interesting!</span>
+                <span class="lang-ar">كل شيء حرفياً — وكل ثانية كانت ممتعة!</span>
+              </p>
+              <figcaption class="testi-name">
+                <span class="lang-en">Workshop attendee · Work &amp; careers track</span>
+                <span class="lang-ar">أحد الحاضرين · مسار العمل والمهن</span>
+              </figcaption>
+            </blockquote>
+          </figure>
+          <!-- 2 -->
+          <figure class="testi-card" data-zoom data-tilt>
+            <span class="mesh mesh-3" data-speed="0.015"></span>
+            <span class="grain"></span>
+            <div class="bigcard-scrim"></div>
+            <blockquote class="testi-body">
+              <span class="testi-quote" aria-hidden="true">“</span>
+              <p>
+                <span class="lang-en">Useful, detailed information about Claude — I'm excited to go home and try it.</span>
+                <span class="lang-ar">معلومات مفيدة ومفصّلة عن Claude — متحمّسة للعودة إلى المنزل وتجربتها.</span>
+              </p>
+              <figcaption class="testi-name">
+                <span class="lang-en">Workshop attendee · Work &amp; careers track</span>
+                <span class="lang-ar">أحد الحاضرين · مسار العمل والمهن</span>
+              </figcaption>
+            </blockquote>
+          </figure>
+          <!-- 3 -->
+          <figure class="testi-card" data-zoom data-tilt>
+            <span class="mesh mesh-5" data-speed="0.015"></span>
+            <span class="grain"></span>
+            <div class="bigcard-scrim"></div>
+            <blockquote class="testi-body">
+              <span class="testi-quote" aria-hidden="true">“</span>
+              <p>
+                <span class="lang-en">The content was beautiful and the flow of ideas was spot-on.</span>
+                <span class="lang-ar">المحتوى جميل ورائع، وتسلسل الأفكار مناسب جدًا.</span>
+              </p>
+              <figcaption class="testi-name">
+                <span class="lang-en">Workshop attendee · Content track</span>
+                <span class="lang-ar">أحد الحاضرين · مسار المحتوى</span>
+              </figcaption>
+            </blockquote>
+          </figure>
+          <!-- 4 -->
+          <figure class="testi-card" data-zoom data-tilt>
+            <span class="mesh mesh-2" data-speed="0.015"></span>
+            <span class="grain"></span>
+            <div class="bigcard-scrim"></div>
+            <blockquote class="testi-body">
+              <span class="testi-quote" aria-hidden="true">“</span>
+              <p>
+                <span class="lang-en">The clear explanation and the hands-on experience.</span>
+                <span class="lang-ar">الشرح الواضح والتجربة العملية.</span>
+              </p>
+              <figcaption class="testi-name">
+                <span class="lang-en">Workshop attendee · Content track</span>
+                <span class="lang-ar">أحد الحاضرين · مسار المحتوى</span>
+              </figcaption>
+            </blockquote>
+          </figure>
+          <!-- 5 -->
+          <figure class="testi-card" data-zoom data-tilt>
+            <span class="mesh mesh-4" data-speed="0.015"></span>
+            <span class="grain"></span>
+            <div class="bigcard-scrim"></div>
+            <blockquote class="testi-body">
+              <span class="testi-quote" aria-hidden="true">“</span>
+              <p>
+                <span class="lang-en">I learned the importance of using AI the right way.</span>
+                <span class="lang-ar">تعلّمت أهمية استخدام الذكاء الاصطناعي بالطريقة الصحيحة.</span>
+              </p>
+              <figcaption class="testi-name">
+                <span class="lang-en">Workshop attendee · Work &amp; careers track</span>
+                <span class="lang-ar">أحد الحاضرين · مسار العمل والمهن</span>
+              </figcaption>
+            </blockquote>
+          </figure>
+        </div>
+      </div>
+    </section>
+
     <!-- ===== FLOW GRID SHOWCASE ===== -->
     <section id="flowgrid" class="section">
       <div class="container">
@@ -363,6 +472,46 @@
       </div>
     </section>
 
+    <!-- ===== WORKSHOPS ===== -->
+    <section id="workshops" class="section">
+      <div class="container">
+        <div class="section-label" data-anim><span class="lang-en">Workshops</span><span class="lang-ar">الورش</span></div>
+        <h2 data-anim data-delay="1" style="margin-bottom:1rem;max-width:20ch">
+          <span class="lang-en">Host a workshop with us.</span>
+          <span class="lang-ar">استضف ورشة معنا.</span>
+        </h2>
+        <p class="text-lg" data-anim data-delay="2" style="max-width:560px;margin-bottom:3rem">
+          <span class="lang-en">Want a hands-on AI workshop for your team, university or organization? Bring Mohammad from <span class="brand"><span class="b-flow">flow</span><span class="b-plus">+</span></span> to run a session built around your goals.</span>
+          <span class="lang-ar">تريد ورشة عملية في الذكاء الاصطناعي لفريقك أو جامعتك أو مؤسستك؟ استضف محمد من <span class="brand"><span class="b-flow">flow</span><span class="b-plus">+</span></span> لتقديم جلسة مصمّمة حول أهدافك.</span>
+        </p>
+        <a href="mailto:mohammad@flowplus.ae?subject=Host%20a%20workshop%20with%20flow%2B&body=Hi%20Mohammad%2C%0A%0AWe'd%20like%20to%20host%20a%20workshop%20session%20with%20flow%2B.%0A%0AOrganization%3A%0APreferred%20dates%3A%0AAudience%20size%3A%0ATopic%2Fgoals%3A%0A%0AThanks!" class="btn-mesh" data-anim data-delay="3">
+          <span class="mesh mesh-1"></span>
+          <span style="color:#000000"><span class="lang-en">Host your workshop session</span><span class="lang-ar">استضف جلسة الورشة</span></span>
+        </a>
+
+        <!-- Past workshops -->
+        <div class="past-ws-head" data-anim>
+          <span class="section-tag-line"></span>
+          <span class="past-ws-label"><span class="lang-en">Past workshops</span><span class="lang-ar">ورش سابقة</span></span>
+        </div>
+        <div class="past-ws-grid" data-anim data-delay="1">
+          <article class="past-ws-card" dir="rtl">
+            <div class="past-ws-media">
+              <picture>
+                <source srcset="assets/workshop-ai.webp" type="image/webp">
+                <img src="assets/workshop-ai.jpg" alt="ورشة تدريبية حضورية — الذكاء الاصطناعي، لغة المستقبل" width="1080" height="1350" loading="lazy" decoding="async">
+              </picture>
+              <span class="past-ws-badge"><span class="lang-en">Completed</span><span class="lang-ar">منتهية</span></span>
+            </div>
+            <div class="past-ws-info">
+              <h3 class="past-ws-title">الذكاء الاصطناعي، لغة المستقبل</h3>
+              <p class="past-ws-meta"><span class="lang-en" dir="ltr">Artificial Intelligence, the Language of the Future · 18 Jul 2026</span><span class="lang-ar">الذكاء الاصطناعي، لغة المستقبل · ١٨ يوليو ٢٠٢٦</span></p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
     <!-- ===== CONTACT ===== -->
     <section id="contact" class="section">
       <div class="container" style="text-align:center;position:relative">
@@ -408,32 +557,6 @@
       </div>
     </section>
   </main>
-
-  <!-- ===== EXTERNAL LINK DISCLAIMER MODAL (TEMPORARY) ===== -->
-  <div class="ext-modal" id="extModal" dir="rtl" aria-hidden="true">
-    <div class="ext-modal-backdrop" data-ext-close></div>
-    <div class="ext-modal-card" role="dialog" aria-modal="true" aria-labelledby="extModalTitle" aria-describedby="extModalBody">
-      <span class="mesh mesh-1"></span>
-      <span class="grain"></span>
-      <div class="ext-modal-body">
-        <div class="ext-modal-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
-        </div>
-        <h3 class="ext-modal-title" id="extModalTitle">أنت على وشك مغادرة الموقع</h3>
-        <p class="ext-modal-text" id="extModalBody">
-          سيأخذك رابط التسجيل إلى نموذج مستضاف على منصة خارجية تابعة لطرف ثالث، خارج موقع <span class="brand"><span class="b-flow">flow</span><span class="b-plus">+</span></span>.
-          للانتقال إلى صفحة التسجيل، اضغط «متابعة».
-        </p>
-        <div class="ext-modal-actions">
-          <a href="#" class="btn-mesh ext-modal-continue" id="extModalContinue" target="_blank" rel="noopener noreferrer">
-            <span class="mesh mesh-1"></span>
-            <span style="color:#000000">متابعة</span>
-          </a>
-          <button type="button" class="btn-ghost ext-modal-cancel" data-ext-close>إلغاء</button>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <footer class="footer">
     <div class="container">

@@ -91,7 +91,58 @@ function clean(s, max) {
 /* ---------- app ---------- */
 const app = express();
 app.set('trust proxy', true); // Railway is behind a proxy — get the real client IP
+app.disable('x-powered-by');
 app.use(express.json({ limit: '64kb' }));
+
+/* ---------- security + canonical host ----------
+ * The apex domain (flowplus.ae) must be added as a custom domain in Railway and
+ * pointed at it via DNS for this to receive apex traffic at all (see DEPLOYMENT.md).
+ * Once it does, we force HTTPS and fold the apex into the canonical www host so
+ * there is a single, certificate-backed origin.
+ */
+const CANONICAL_HOST = 'www.flowplus.ae';
+const APEX_HOST = 'flowplus.ae';
+
+app.use((req, res, next) => {
+  // Security headers on every response.
+  res.setHeader('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('Permissions-Policy', 'geolocation=(), microphone=(), camera=(), payment=()');
+  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+  res.setHeader('Content-Security-Policy', [
+    "default-src 'self'",
+    "script-src 'self' 'unsafe-inline'",
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    "font-src 'self' https://fonts.gstatic.com",
+    "img-src 'self' data:",
+    "connect-src 'self' https://*.supabase.co",
+    "form-action 'self' mailto:",
+    "frame-ancestors 'self'",
+    "base-uri 'self'",
+    "object-src 'none'",
+    "upgrade-insecure-requests"
+  ].join('; '));
+
+  const host = (req.headers.host || '').toLowerCase().split(':')[0];
+  const proto = req.headers['x-forwarded-proto'];
+  const isProdHost = host === APEX_HOST || host === CANONICAL_HOST;
+
+  // Only touch real production hostnames — never localhost or *.railway.app,
+  // so the Railway healthcheck and local dev are left alone.
+  if (isProdHost) {
+    // Force HTTPS when the proxy tells us the request arrived over http.
+    if (proto === 'http') {
+      return res.redirect(308, 'https://' + CANONICAL_HOST + req.originalUrl);
+    }
+    // Fold apex → www so there is one canonical, cert-backed origin.
+    if (host === APEX_HOST) {
+      return res.redirect(308, 'https://' + CANONICAL_HOST + req.originalUrl);
+    }
+  }
+  next();
+});
 
 /* ===== public API ===== */
 

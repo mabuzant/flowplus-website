@@ -79,6 +79,15 @@
     table.resp td { color: var(--text-2); max-width: 260px; overflow: hidden; text-overflow: ellipsis; }
     table.resp tr:hover td { background: rgba(255,255,255,0.03); color: var(--text-1); }
     .section-tag { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.16em; color: var(--text-3); font-weight: 600; margin: 2rem 0 0.9rem; }
+
+    /* delete button in table */
+    .del-cell { text-align: center; }
+    .del-btn { width: 26px; height: 26px; border-radius: 8px; cursor: pointer; font-family: var(--font-en);
+      background: rgba(255,80,80,0.08); border: 1px solid rgba(255,120,120,0.25); color: #ff8f8f;
+      font-size: 0.8rem; line-height: 1; display: inline-flex; align-items: center; justify-content: center;
+      transition: all 0.2s var(--ease); }
+    .del-btn:hover { background: rgba(255,80,80,0.22); color: #fff; border-color: rgba(255,120,120,0.5); }
+    .del-btn[disabled] { opacity: 0.5; cursor: progress; }
   </style>
 </head>
 <body>
@@ -184,6 +193,33 @@
       dash.classList.remove('show'); lock.style.display = 'flex'; pinInput.value = ''; currentPin = ''; responses = [];
     });
     document.getElementById('csvBtn').addEventListener('click', exportCsv);
+
+    /* ---------- delete a single response ---------- */
+    document.getElementById('respTable').addEventListener('click', function (e) {
+      var btn = e.target.closest ? e.target.closest('.del-btn') : null;
+      if (!btn) return;
+      var id = btn.getAttribute('data-id');
+      if (!id) return;
+      if (!window.confirm('Delete this response permanently? This cannot be undone.')) return;
+      btn.disabled = true; btn.textContent = '…';
+      fetch(FN_URL, {
+        method: 'POST',
+        headers: { 'apikey': SUPABASE_ANON, 'Authorization': 'Bearer ' + SUPABASE_ANON, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pin: currentPin, action: 'delete', id: id })
+      }).then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+        .then(function (res) {
+          if (res.ok && res.j && res.j.ok) {
+            responses = responses.filter(function (x) { return x.id !== id; });
+            render();
+          } else {
+            btn.disabled = false; btn.textContent = '✕';
+            alert('Could not delete: ' + ((res.j && res.j.error) || 'unknown error'));
+          }
+        }).catch(function () {
+          btn.disabled = false; btn.textContent = '✕';
+          alert('Network error — try again.');
+        });
+    });
 
     /* ---------- aggregation helpers ---------- */
     function nums(field) { return responses.map(function (r) { return r[field]; }).filter(function (v) { return typeof v === 'number'; }); }
@@ -301,7 +337,7 @@
         ['q5', 'Pace'], ['q5_detail', 'Too fast'], ['q6', 'Useful'], ['q7', 'Unclear'], ['q8', 'Track'],
         ['q9', 'Use'], ['q9_task', 'Task'], ['q10', 'Part 2'], ['q11', 'Best'], ['q12', 'Change'], ['q13', 'Testimonial'], ['q13_email', 'Email']
       ];
-      var thead = '<thead><tr>' + cols.map(function (c) { return '<th>' + c[1] + '</th>'; }).join('') + '</tr></thead>';
+      var thead = '<thead><tr>' + cols.map(function (c) { return '<th>' + c[1] + '</th>'; }).join('') + '<th></th></tr></thead>';
       var tbody = '<tbody>' + responses.slice().reverse().map(function (r) {
         return '<tr>' + cols.map(function (c) {
           var v = r[c[0]];
@@ -309,7 +345,7 @@
           else if (Array.isArray(v)) v = v.map(shortLabel).join(', ');
           else if (typeof v === 'string') v = shortLabel(v);
           return '<td title="' + esc(v == null ? '' : v) + '">' + esc(v == null || v === '' ? '—' : v) + '</td>';
-        }).join('') + '</tr>';
+        }).join('') + '<td class="del-cell"><button class="del-btn" data-id="' + esc(r.id) + '" title="Delete this response">✕</button></td></tr>';
       }).join('') + '</tbody>';
       document.getElementById('respTable').innerHTML = thead + tbody;
     }
