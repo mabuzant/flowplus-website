@@ -5,9 +5,9 @@ Drop the **official** logo files here using these exact names. The homepage
 
 | File | Client |
 |------|--------|
-| `aurak.svg` | American University of Ras Al Khaimah (AURAK) |
-| `federal-youth-authority.svg` | Federal Youth Authority — الهيئة الاتحادية للشباب |
-| `youth-councils.svg` | مجالس الشباب — UAE Youth Councils |
+| `aurak.png` | American University of Ras Al Khaimah (AURAK) |
+| `federal-youth-authority.png` | Federal Youth Authority — الهيئة الاتحادية للشباب |
+| `youth-councils.png` | مجالس الشباب — UAE Youth Councils |
 
 ## Format
 - **SVG preferred** (crisp at any size). High-res **PNG with transparent
