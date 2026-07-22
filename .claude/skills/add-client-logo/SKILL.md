@@ -43,12 +43,17 @@ flow+ site, treated identically to the existing logos, then deploys live.
    ```bash
    python3 scripts/process_logo.py <input_file> <slug>
    ```
+   - **Background removal is automatic.** If the logo arrives on a solid
+     background (no transparency), the script flood-fills from the edges to key
+     it out — so only the border-connected background is removed, not
+     same-coloured areas inside the logo. Tune with `--bg-tol N` (default 36)
+     if it takes too much/too little; `--no-remove-bg` disables it.
    - If it's a **composite** and the user wants only part of it, first find the
      crop rows (inspect with Pillow, like the youth-councils case) and pass
      `--crop-rows A-B`.
-   - If the script **warns about an opaque background**, the white tint won't
-     work — remove the background first (e.g. key out the corner colour) and
-     re-run, or tell the user you need a transparent PNG/SVG.
+   - If the script still **warns it's opaque** (logo colour ≈ background, so the
+     flood-fill bailed for safety), ask the user for a transparent PNG/SVG or
+     adjust `--bg-tol`.
 
 4. **Register it** — add an object to `assets/clients/clients.json`
    (order = display order):
