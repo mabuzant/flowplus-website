@@ -20,6 +20,17 @@ Read `blog/_template.html` — this is the shared post shell. Copy it (in memory
 - `__FAQ_JSONLD__` → a real `<script type="application/ld+json">` block, `@type: FAQPage`, with 3–5 genuine `Question`/`Answer` pairs. The first question should closely match (or directly answer) `TOPIC.question`. Every answer must be a real, useful, specific answer — not a stub.
 - `__BODY_HTML__` → the article body as semantic HTML (`<p>`, `<h2>`, `<h3>`, `<ul>`/`<li>` where useful). 700–1000 words. Do **not** duplicate the `<h1>` inside the body — the template already renders one `<h1>` for the title.
 
+**FAQ visibility (required for valid FAQ rich results):** the article body MUST end with a visible FAQ section that renders every Q/A from the `__FAQ_JSONLD__` block **word-for-word**:
+
+```html
+<h2>Frequently asked questions</h2>
+<div class="faq-item"><h3>QUESTION 1 verbatim</h3><p>ANSWER 1 verbatim</p></div>
+<div class="faq-item"><h3>QUESTION 2 verbatim</h3><p>ANSWER 2 verbatim</p></div>
+<!-- one faq-item per JSON-LD Question, same text -->
+```
+
+Google requires the full question and answer text to appear on the page; if the JSON-LD text is not visibly present verbatim, the markup is invalid. Write the FAQ copy once, then reuse the identical strings in both the JSON-LD and this visible block.
+
 ### Content requirements
 
 - Ground the post in `TOPIC.keyword` and `TOPIC.question` — write it like a genuinely useful answer to that Reddit-style question, not keyword-stuffed filler.
